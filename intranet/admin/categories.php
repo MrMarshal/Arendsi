@@ -36,7 +36,7 @@
 let table = null;
 
 function getCategories() {
-    api_post("catalogs/GetAllCategories", {
+    api_post("categories/GetAllCategories", {
         section: <?php echo $_GET['section']; ?>
     }).then(res => {
         $("#table_data").html("");
@@ -52,13 +52,13 @@ function getCategories() {
                         </td>
                     </tr>`;
         });
+        if (table != null) table.destroy();
         $("#table_data").html(items);
         initDataTable();
     });
 }
 
 function initDataTable() {
-    if (table != null) table.destroy();
     table = new DataTable('#data_table', {
         responsive: true
     });
@@ -72,7 +72,7 @@ let edit_category_id = 0;
 
 function editCategory(id){
     edit_category_id = id;
-    api_post("catalogs/GetCategoryById",{
+    api_post("categories/GetCategoryById",{
         id
     }).then(res =>{
         $("#name").val(res.name);

@@ -26,3 +26,17 @@ async function api_post_file(url,file,data) {
         });
     });
 }
+
+async function api_select(select_id,url,data) {
+	const response = await fetch(base_url+url,{
+		method: "POST",
+		body: JSON.stringify(data)
+	});
+	response.json().then(res=>{
+        let select_s = "";
+        res.forEach(r => {
+            select_s+=`<option value="${r.id}">${r.name}</option>`;
+        });
+        $("#"+select_id).html(select_s);
+    });
+}

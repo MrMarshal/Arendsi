@@ -40,11 +40,12 @@
 
 <script type="text/javascript">
 function saveSubcategory() {
-    api_post("catalogs/SaveSubcategory", {
+    api_post("categories/SaveSubcategory", {
         id: edit_subcategory_id,
         category_id: $("#category_select").val(),
         name: $("#name").val(),
-        description: $("#description").val()
+        description: $("#description").val(),
+        section_id: <?php echo $_GET['section']; ?>
     }).then(res => {
         alert({
             title: "Listo!",
@@ -67,7 +68,7 @@ function saveSubcategory() {
 
 <script type="text/javascript">
 function getCategories() {
-    api_post("catalogs/GetAllCategories", {
+    api_post("categories/GetAllCategories", {
         section: <?php echo $_GET['section']; ?>
     }).then(res => {
         let categories = "<option value='0'>Elige una categoría</option>";

@@ -76,34 +76,31 @@
     Flight::route('/admin/stock', function () {
         Flight::set('flight.views.path', 'intranet');
         Flight::render('admin/stock', ['title' => 'Stock']);
-        if ($_GET['section']==1){
+        /*if ($_GET['section']==1){
             Flight::modal("stock_coffe");
-        }
-        if ($_GET['section']==2){
+        }*/
+        //if ($_GET['section']==2){
             Flight::modal("stock_boutique");
-        }
+        //}
     });
 
     Flight::route('/admin/categories', function () {
         Flight::set('flight.views.path', 'intranet');
         Flight::render('admin/categories', ['title' => 'Categories']);
-        if ($_GET['section']==1){
-            Flight::modal("categories_coffe");
-        }
-        /*if ($_GET['section']==2){
-            Flight::modal("categories_boutique");
-        }*/
+        Flight::modal("categories");
     });
 
     Flight::route('/admin/subcategories', function () {
         Flight::set('flight.views.path', 'intranet');
         Flight::render('admin/subcategories', ['title' => 'Subcategories']);
-        if ($_GET['section']==1){
-            Flight::modal("subcategories_coffe");
-        }
-        /*if ($_GET['section']==2){
-            Flight::modal("categories_boutique");
-        }*/
+        Flight::modal("subcategories");        
+    });
+
+
+    Flight::route('/admin/tables', function () {
+        Flight::set('flight.views.path', 'intranet');
+        Flight::render('admin/tables', ['title' => 'Mesas']);
+        Flight::modal("tables");
     });
 
 

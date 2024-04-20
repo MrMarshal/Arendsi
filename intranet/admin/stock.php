@@ -58,7 +58,7 @@ function getProducts() {
                         <td>$${i.cost}/$${i.price}</td>
                         <td>${i.stock}</td>
                         <td>
-                            <button type="button" class="btn btn-sm btn-primary text-center"><i class="fa fa-edit"></i></button>
+                            <button type="button" onclick="editProduct(${i.id})" class="btn btn-sm btn-primary text-center"><i class="fa fa-edit"></i></button>
                             <button type="button" class="btn btn-sm btn-primary text-center"><i class="fa fa-trash"></i></button>
                         </td>
                     </tr>`;
@@ -80,7 +80,7 @@ function addProduct() {
 }
 
 function getCategories() {
-    api_post("catalogs/GetAllCategories", {
+    api_post("categories/GetAllCategories", {
         section: <?php echo $_GET['section']; ?>
     }).then(res => {
         let categories = "<option value='0'>Elige una categoría</option>";
@@ -91,13 +91,13 @@ function getCategories() {
     });
 }
 
-function getSubcategories() {
-    api_post("catalogs/GetAllSubcategoriesByCategory", {
+function getSubcategories(def = 0) {
+    api_post("categories/GetAllSubcategoriesByCategory", {
         category: $("#category_select").val()
     }).then(res => {
         let subcategories = "<option value='0'>Elige una subcategoría</option>";
         res.forEach(c => {
-            subcategories += `<option value="${c.id}">${c.name}</option>`;
+            subcategories += `<option value="${c.id}" ${def!=0 && def==c.id?"selected":""}>${c.name}</option>`;
         });
         $("#subcategory_select").html(subcategories);
     });
@@ -113,6 +113,25 @@ function setImagePreview() {
             };
             reader.readAsDataURL(file);
         }
+    });
+}
+
+function editProduct(id){
+    edit_product_id = id;
+    api_post("products/GetProductById",{
+        id
+    }).then(res=>{
+        $("#name").val(res.name)
+        $("#category_select").val(res.category_id)
+        $("#cost").val(res.cost)
+        $("#price").val(res.price)
+        $("#stock").val(res.stock)
+        $("#stock_min").val(res.stock_min)
+        $("#description").val(res.description)
+        $("#cui").val(res.code)
+        $("#image_preview").attr("src",res.images!=null?("<?php echo __ROOT__; ?>/assets/data/products/"+res.images[0].url):null);
+        getSubcategories(res.subcategory_id);
+        $("#productModal").modal('show');
     });
 }
 

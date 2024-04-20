@@ -83,8 +83,9 @@
 
 <script type="text/javascript">
 function saveProduct() {
-    api_post("products/SaveProductCoffe", {
+    api_post("products/SaveProduct", {
         id: edit_product_id,
+        section_id: <?php echo $section; ?>,
         name: $("#name").val(),
         category_id: $("#category_select").val(),
         subcategory_id: $("#subcategory_select").val(),

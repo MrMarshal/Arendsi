@@ -1,0 +1,9 @@
+RewriteEngine On
+#RewriteBase /v2
+RewriteBase /sinergia/web/arendsi
+RewriteCond %{REQUEST_FILENAME} -s [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.*$ - [NC,L]
+RewriteRule ^.*$ index.php [NC,L]
+# END cPanel-generated php ini directives, do not edit

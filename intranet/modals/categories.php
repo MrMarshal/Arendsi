@@ -34,10 +34,11 @@
 
 <script type="text/javascript">
 function saveCategory() {
-    api_post("catalogs/SaveCategory",{
+    api_post("categories/SaveCategory",{
         id:edit_category_id,
         name: $("#name").val(),
-        description: $("#description").val()
+        description: $("#description").val(),
+        section_id:<?php echo $_GET['section']; ?>
     }).then(res=>{
         alert({title:"Listo!",text:"Guardado con éxito"});
         $("#categoryModal").modal("hide");

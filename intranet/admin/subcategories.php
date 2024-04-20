@@ -37,7 +37,7 @@
 let table = null;
 
 function getSubcategories() {
-    api_post("catalogs/GetAllSubcategories", {
+    api_post("categories/GetAllSubcategories", {
         section: <?php echo $_GET['section']; ?>
     }).then(res => {
         console.log(res);
@@ -55,13 +55,13 @@ function getSubcategories() {
                         </td>
                     </tr>`;
         });
+        if (table != null) table.destroy();
         $("#table_data").html(items);
         initDataTable();
     });
 }
 
 function initDataTable() {
-    if (table != null) table.destroy();
     table = new DataTable('#data_table', {
         responsive: true
     });
@@ -75,7 +75,7 @@ let edit_subcategory_id = 0;
 
 function editSubcategory(id) {
     edit_subcategory_id = id;
-    api_post("catalogs/GetSubcategoryById", {
+    api_post("categories/GetSubcategoryById", {
         id
     }).then(res => {
         $("#category_select").val(res.category_id);

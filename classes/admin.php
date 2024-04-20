@@ -6,9 +6,10 @@ class Admin
 	const TABLE_USERS = "users";
 	const TABLE_PRODUCTS = "products";
 	const TABLE_IMAGES = "images";
+	const TABLE_CATEGORIES = "categories";
+	const TABLE_SUBCATEGORIES = "subcategories";
 
-	const TABLE_CAT_CATEGORIES = "cat_categories";
-	const TABLE_CAT_SUBCATEGORIES = "cat_subcategories";
+	const TABLE_CAT_LOCATIONS = "cat_locations";
 
 
 	public $db;
