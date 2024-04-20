@@ -3,7 +3,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
 
 <nav class="fixed-top">
-    <div class="p-4 container-fluid" style="background-color: #b59f5b">
+    <div class="p-3 container-fluid" style="background-color: #b59f5b">
         <div class="row">
             <div class="col-8">
                 <div class="dropdown">
@@ -53,37 +53,64 @@
         </div>
         <div class="col-8">
             <div class="item_viewed_title_container">
-                <h3 class="item_viewed_title">Más vendidos</h3>
+                <h4 class="item_viewed_title">Más vendidos</h4>
             </div>
             <div class="item_viewed_slider_container">
                 <div class="owl-carousel owl-theme item_viewed_slider" id="bestsellers_container">
 
                 </div>
             </div>
+            <div class="categories_selector_bar">
+                <div class="categories_selector_inner_container">
+                    <a href="#category1">Categoría 1</a>
+                    <a href="#category2">Categoría 2</a>
+                    <a href="#category3">Categoría 3</a>
+                </div>
+            </div>
+            <div class="container category-product">
+            <div class="article_card">
+                    <img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560924153/alcatel-smartphones-einsteiger-mittelklasse-neu-3m.jpg" alt="article-cover" class="article_image">
+                    <div class="text-content">
+                        <p class="title">$60 <br> Capuchino Cream</p>
+                    </div>
+                </div>
+                
+            </div>
         </div>
         <div class="col-4">
             <fieldset>
                 <div class="container blue-box">
                     <div class="row">
-                        <div class="col-7 pt-2">
-                            <select id="tables_select" class="form-control"></select>
+                        <div class="col-7" style="font-size: 15px;" ># Mesa</div>
+                        <div class="col-5" style="font-size: 15px; text-align: right;">Total</div>
+                        
+                        <div class="col-7">
+                            <select id="tables_select" class="form-select"></select>
                         </div>
-                        <div class="col-5">
-                            Total<br><span id="order_total">$00.00</span>
+                        <div class="col-5 " style="font-size: 20px; text-align: right;"><span id="order_total">$00.00</span>
                         </div>
-                        <div class="col-12" id="order_items_container"></div>
-                        <div class="col-12">
-                            <a class="btn btn-outline-primary w-100 mt-2" onclick="closeOrdes();">Cerrar Cuenta</a>
+                        <div class="row" style="margin-top: 5px; border-bottom: 1px solid white;">
+                            <div class="col-2" style="font-size: 12px;">Uds.</div>
+                            <div class="col-8" style="font-size: 12px;">Producto</div>
                         </div>
-                        <div class="col-12">
-                            <a class="btn btn-outline-secondary w-100 mt-2" onclick="printOrder();">Imprimir</a>
+                        <div class="col-12 container" id="order_items_container">
+                            <div class="row order_item">
+                                <div class = "col-1 item_quantity">3</div>
+                                <div class = "col-8 item_name"> Champurrado de chocolate <br> $50</div>
+                                <div class="col-2">
+                                    <button type="button" class="btn btn-sm btn-primary text-center"><i class="fa fa-trash"></i></button>
+                                    </div>
+                            </div>
                         </div>
-                        <div class="col-12">
-                            <a class="btn btn-outline-success w-100 mt-2" onclick="chargeOrder();">Cobrar</a>
+                        <div class="col-6">
+                            <a class="btn action_btn btn-outline-primary w-100 mt-2" onclick="closeOrdes();">Cerrar Cuenta</a>
+                            <a class="btn action_btn btn-danger w-100 mt-2" onclick="cancelOrder();">Cancelar</a>
                         </div>
-                        <div class="col-12">
-                            <a class="btn btn-outline-danger w-100 mt-2" onclick="cancelOrder();">Cancelar</a>
+                        <div class="col-6">
+                            <a class="btn action_btn btn-outline-secondary w-100 mt-2" onclick="printOrder();">Imprimir</a>
+                            <a class="btn action_btn btn-success w-100 mt-2" onclick="chargeOrder();">Cobrar</a>
                         </div>
+                        
                     </div>
                 </div>
             </fieldset>
@@ -190,6 +217,7 @@ body {
     background-color: #4f7f94;
     border-radius: 10px;
     color: white;
+    padding-top: 5px;
 }
 
 .fixed-top * {
@@ -226,7 +254,7 @@ body {
     padding-top: 13px;
     background-color: #4f7f94;
     border-radius: 10px;
-    padding: 30px;
+    padding: 20px;
 }
 
 .item_viewed_item {
@@ -242,7 +270,12 @@ body {
 
 .item_viewed_image img {
     display: block;
-    max-width: 100%
+    max-width: 100%;
+    border-radius: 10px 10px 0px 0px;
+}
+.item_viewed_content{
+    background-color: #386375;
+    border-radius: 0px 0px 10px 10px;
 }
 
 .item_viewed_price span {
@@ -273,4 +306,105 @@ body {
     -o-transition: all 200ms ease;
     transition: all 200ms ease
 }
+
+.categories_selector_bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.categories_selector_inner_container {
+    background-color: #4f7f94;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.categories_selector_inner_container a{
+    padding: 5px;
+}
+.categories_selector_inner_container a:hover{
+    padding: 5px;
+    background-color: #557785;
+
+}
+
+.categories_selector_inner_container a.active{
+    background-color: #386375;
+    padding: 5px;
+}
+
+.category-product{
+    background-color: #4f7f94;
+    border-radius: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    padding: 10px;
+    gap: 5px;
+
+}
+
+
+.article_card {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    
+}
+
+.article_image{
+    position: absolute;
+    width: 100%; 
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+.text-content {
+    z-index: 2; /* Garantiza que el texto esté encima de la imagen */
+    color: white; /* Color del texto para mejor visibilidad */
+    font-size: 10px;
+}
+.date, .title {
+    backdrop-filter: blur(1px);
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente para mejorar legibilidad */
+    padding: 5px 10px; /* Padding para el texto */
+    border-radius: 5px; /* Bordes redondeados */
+    text-align: left; /* Alineación del texto a la izquierda */
+}
+
+.form-select option{
+    background-color: #004564;
+    backdrop-filter: blur(1px);
+}
+
+.order_item{
+    background-color:  #386375;
+    border-radius: 5px;
+    align-items: center;
+    padding: 5px;
+    margin: 5px;
+}
+.item_quantity{
+    background-color:#004564;
+    text-align: center;
+    border-radius: 5px;
+    padding: 2px;
+}
+.item_name{
+    font-size: 10px;
+}
+.action_btn{
+    font-size: 15px;
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+
 </style>
