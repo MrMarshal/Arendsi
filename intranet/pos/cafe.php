@@ -393,6 +393,8 @@ body {
     margin: 5px;
 }
 .item_quantity{
+    width: 25px; 
+    height: 25px;
     background-color:#004564;
     text-align: center;
     border-radius: 5px;
