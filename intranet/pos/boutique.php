@@ -44,10 +44,6 @@
         <div class="col-8">
             <div class="categories_selector_bar">
                 <div class="categories_selector_inner_container">
-                    <a data-filter="all" href="#category1">Todo</a>
-                    <a data-filter=".category-a" href="#category1">Categoría 1</a>
-                    <a data-filter=".category-b" href="#category2">Categoría 2</a>
-                    <a data-filter=".category-c" href="#category3">Categoría 3</a>
                 </div>
             </div>
             <div class="container category-product" id="products_container">
@@ -78,8 +74,8 @@
                         <div class="col-7">
                             <!--<select id="tables_select" class="form-select"></select>-->
                         </div>
-                        <div class="col-5 " style="font-size: 20px; text-align: right;"><span
-                                id="order_total">$00.00</span>
+                        <div class="col-5 " style="font-size: 20px; text-align: right;">
+                            $<span id="order_total"></span>
                         </div>
                         <div class="row" style="margin-top: 5px; border-bottom: 1px solid white;">
                             <div class="col-2" style="font-size: 12px;">Uds.</div>
@@ -107,8 +103,10 @@
         <div class="col-5 container blue-box">
             <div class="row">
                 <div class="col-5">
-                    Codigo de barra o QR
-                    <div class="scanner"></div>
+                    Codigo QR
+                    <div style="width:175px;height: 150px;overflow: hidden;margin-top:10px">
+                        <video id="qr-scanner"></video>
+                    </div>
                 </div>
                 <div class="col-4">
                     <label for="descripcion">Descripción:</label>
@@ -132,6 +130,7 @@
 let orders = [];
 let current_order = 0;
 let products = [];
+let categories = [];
 
 
 api_post("tables/GetAllTables").then(res => {
@@ -146,8 +145,18 @@ api_post("tables/GetAllTables").then(res => {
     $("#tables_select").html(tables_s);
 });
 
+api_post("categories/GetAllCategories", {
+    section: 2
+}).then(res => {
+    categories = res;
+    let cats = `<a data-filter="all" href="#category1">Todo</a>`;
+    categories.forEach(cat => {
+        cats += `<a data-filter=".category-a" href="#category1">Categoría 1</a>`;
+    });
+});
+
 api_post("products/GetActiveProducts", {
-    section: 1
+    section: 2
 }).then(res => {
     products = res;
     let prods = "";
@@ -164,7 +173,9 @@ api_post("products/GetActiveProducts", {
     $("#products_container").html(prods);
 });
 
-api_post("products/GetBestsellers").then(res => {
+api_post("products/GetBestsellers",{
+    section:2
+}).then(res => {
     let prods = "";
     res.forEach(p => {
         prods += `<div class="owl-item" onclick="addProduct(${p.id})">
@@ -202,7 +213,9 @@ api_post("products/GetBestsellers").then(res => {
 });
 
 function addProduct(id) {
+    console.log(products)
     let product = products.find(x => x.id == id);
+    console.log(product);
     if (!orders[current_order]) orders[current_order] = [];
     let index = orders[current_order].findIndex(x => x.product_id == id);
     if (index != -1) {
@@ -214,32 +227,58 @@ function addProduct(id) {
             product
         });
     }
-    printOrder();
+    printCurrentOrder();
 }
 
-function printOrder() {
+function printCurrentOrder() {
     let ords = "";
+    let total = 0;
     orders[current_order].forEach((o, index) => {
         ords += `<div class="container mx-0 px-0" id="order_item_${index}">
                     <div class="row order_item">
                         <div id="order_item_quantity_${index}" class="col-1 item_quantity">${o.quantity}</div>
                         <div class="col-3 px-0 ml-4">
-                            <button type="button" onclick="deleteOrder()" class="btn btn-sm btn-success text-center" style="margin-left:2px;"><i class="fa fa-plus"></i></button>
-                            <button type="button" onclick="deleteOrder()" class="btn btn-sm btn-primary text-center" style="margin-left:5px;"><i class="fa fa-minus"></i></button>
+                            <button type="button" onclick="increaseQuantity(${index})" class="btn btn-sm btn-success text-center" style="margin-left:2px;"><i class="fa fa-plus"></i></button>
+                            <button type="button" onclick="decreaseQuantity(${index})" class="btn btn-sm btn-primary text-center" style="margin-left:5px;"><i class="fa fa-minus"></i></button>
                         </div>
                         <div class="col-6 item_name px-0">${o.product.name} <br> $${o.product.price}</div>
                         <div class="col-1">
-                            <button type="button" onclick="deleteOrder()" class="btn btn-sm btn-danger text-center"><i class="fa fa-trash"></i></button>
+                            <button type="button" onclick="deleteOrder(${index})" class="btn btn-sm btn-danger text-center"><i class="fa fa-trash"></i></button>
                         </div>
                     </div>
                 </div>`;
+        total += Number(o.product.price) * Number(o.quantity);
     });
+
+    $("#order_total").html(total);
 
     $("#order_items_container").html(ords);
 }
 
-function showCurrentOrder() {
-    //order_items_container 
+function decreaseQuantity(index) {
+    if (orders[current_order][index].quantity == 1) {
+        deleteOrder(index);
+    } else {
+        orders[current_order][index].quantity--;
+        printCurrentOrder();
+    }
+}
+
+function increaseQuantity(index) {
+    console.log("Increasing quantity");
+    orders[current_order][index].quantity++;
+    printCurrentOrder();
+}
+
+function deleteOrder(index) {
+    confirm({
+        title: "Eliminar",
+        text: "¿Seguro que deseas eliminar esta orden?",
+        confirm: res => {
+            orders[current_order].splice(index, 1);
+            printCurrentOrder();
+        }
+    });
 }
 </script>
 
@@ -273,6 +312,53 @@ $(document).ready(function() {
 });
 </script>
 
+<script type="text/javascript">
+var qrScanner = null;
+var videoElement = null;
+
+import('<?php echo __ROOT__; ?>/assets/js/qr/qr-scanner.js').then((module) => {
+    videoElement = document.getElementById("qr-scanner");
+    qrScanner = new QrScanner(videoElement, result => {
+        console.log('decoded qr code:', result);
+        qrScanner.stop();
+        try {
+            let res = JSON.parse(result);
+            $("#cui").val(res.cui);
+            $("#cui").css("border-color", "green");
+            $("#cui").css("background-color", "#e1ffe1");
+            $("#qr-result").html("CUI asignado correctamente");
+            getProductByCode(res.cui);
+        } catch (error) {
+            $("#cui").css("border-color", "red");
+            $("#cui").css("background-color", "#ffc5c5");
+            console.log(error);
+        }
+        setTimeout(() => {
+            $("#cui").css("border-color", "#ced4da");
+            $("#cui").css("background-color", "white");
+            startScanner();
+        }, 500);
+    });
+
+    startScanner();
+});
+
+function getProductByCode(code) {
+    api_post("products/getProductByCode", {
+        code
+    }).then(res => {
+        console.log(res);
+    })
+}
+
+function startScanner() {
+    if (qrScanner != null) {
+        qrScanner.start().catch(err => console.error('Error starting the QR scanner:', err));
+    }
+    videoElement.style.transform = "scaleX(1)";
+}
+</script>
+
 <style>
 body {
     background-color: #004564 !important;
@@ -280,6 +366,14 @@ body {
 
 * {
     color: white !important;
+}
+
+.swal2-content * {
+    color: #545454 !important;
+}
+
+.swal2-header * {
+    color: #545454 !important;
 }
 
 .blue-box {
@@ -466,7 +560,7 @@ body {
     backdrop-filter: blur(1px);
 }
 
-#order_items_container{
+#order_items_container {
     display: block;
 }
 
@@ -542,5 +636,11 @@ body {
     margin: 0;
     font-size: 10px;
     line-height: 1.2;
+}
+</style>
+
+<style>
+#qr-scanner {
+    transform: scale(3) translateX(-10%) !important;
 }
 </style>

@@ -45,9 +45,9 @@
             return $prod;
         }
 
-        function GetBestsellers() {
+        function GetBestsellers($data) {
             $user = ["branch_id" => 1];
-            return $this->GetList(self::TABLE_PRODUCTS,"section_id = 1 AND branch_id = ".$user['branch_id']);
+            return $this->GetList(self::TABLE_PRODUCTS,"branch_id = ".$user['branch_id']." AND section_id = ".$data->get('section'));
         }
 
         function GetProductByCode($data) {

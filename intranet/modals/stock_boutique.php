@@ -1,6 +1,3 @@
-<script src="<?php echo __ROOT__; ?>/assets/js/qr/qr-scanner.js"></script>
-
-
 <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="max-width: 80%;width: 80%;">
         <div class="modal-content">
