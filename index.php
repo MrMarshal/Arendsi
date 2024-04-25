@@ -6,11 +6,12 @@
 
    $whitelist = array(
        '127.0.0.1',
+       '192.168.100.185',
        '::1'
    );
 
    if(!in_array($_SERVER['REMOTE_ADDR'], $whitelist)){
-        define('__ROOT__', "https://drjuanjerezano.com/v2");
+        define('__ROOT__', "http://192.168.100.185/sinergia/web/arendsi");
     }else{
         define('__ROOT__', "http://localhost/sinergia/web/arendsi");
     }

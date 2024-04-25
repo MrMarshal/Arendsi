@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
+<link rel="stylesheet" href="<?php echo __ROOT__; ?>/assets/css/mixitup.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
 
 <nav class="fixed-top">
@@ -60,6 +61,32 @@
 
                 </div>
             </div>
+            <div class="controls">
+                <button type="button" class="control" data-filter="all">All</button>
+                <button type="button" class="control" data-filter=".green">Green</button>
+                <button type="button" class="control" data-filter=".blue">Blue</button>
+                <button type="button" class="control" data-filter=".pink">Pink</button>
+                <button type="button" class="control" data-filter="none">None</button>
+
+                <button type="button" class="control" data-sort="default:asc">Asc</button>
+                <button type="button" class="control" data-sort="default:desc">Desc</button>
+            </div>
+
+            <div class="container">
+                <div class="mix green"></div>
+                <div class="mix green"></div>
+                <div class="mix blue"></div>
+                <div class="mix pink"></div>
+                <div class="mix green"></div>
+                <div class="mix blue"></div>
+                <div class="mix pink"></div>
+                <div class="mix blue"></div>
+
+                <div class="gap"></div>
+                <div class="gap"></div>
+                <div class="gap"></div>
+            </div>
+
             <div class="categories_selector_bar">
                 <div class="categories_selector_inner_container">
                     <a href="#category1">Categoría 1</a>
@@ -68,26 +95,28 @@
                 </div>
             </div>
             <div class="container category-product">
-            <div class="article_card">
-                    <img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560924153/alcatel-smartphones-einsteiger-mittelklasse-neu-3m.jpg" alt="article-cover" class="article_image">
+                <div class="article_card">
+                    <img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560924153/alcatel-smartphones-einsteiger-mittelklasse-neu-3m.jpg"
+                        alt="article-cover" class="article_image">
                     <div class="text-content">
                         <p class="title">$60 <br> Capuchino Cream</p>
                     </div>
                 </div>
-                
+
             </div>
         </div>
         <div class="col-4">
             <fieldset>
                 <div class="container blue-box">
                     <div class="row">
-                        <div class="col-7" style="font-size: 15px;" ># Mesa</div>
+                        <div class="col-7" style="font-size: 15px;"># Mesa</div>
                         <div class="col-5" style="font-size: 15px; text-align: right;">Total</div>
-                        
+
                         <div class="col-7">
                             <select id="tables_select" class="form-select"></select>
                         </div>
-                        <div class="col-5 " style="font-size: 20px; text-align: right;"><span id="order_total">$00.00</span>
+                        <div class="col-5 " style="font-size: 20px; text-align: right;"><span
+                                id="order_total">$00.00</span>
                         </div>
                         <div class="row" style="margin-top: 5px; border-bottom: 1px solid white;">
                             <div class="col-2" style="font-size: 12px;">Uds.</div>
@@ -95,22 +124,25 @@
                         </div>
                         <div class="col-12 container" id="order_items_container">
                             <div class="row order_item">
-                                <div class = "col-1 item_quantity">3</div>
-                                <div class = "col-8 item_name"> Champurrado de chocolate <br> $50</div>
+                                <div class="col-1 item_quantity">3</div>
+                                <div class="col-8 item_name"> Champurrado de chocolate <br> $50</div>
                                 <div class="col-2">
-                                    <button type="button" class="btn btn-sm btn-primary text-center"><i class="fa fa-trash"></i></button>
-                                    </div>
+                                    <button type="button" class="btn btn-sm btn-primary text-center"><i
+                                            class="fa fa-trash"></i></button>
+                                </div>
                             </div>
                         </div>
                         <div class="col-6">
-                            <a class="btn action_btn btn-outline-primary w-100 mt-2" onclick="closeOrdes();">Cerrar Cuenta</a>
+                            <a class="btn action_btn btn-outline-primary w-100 mt-2" onclick="closeOrdes();">Cerrar
+                                Cuenta</a>
                             <a class="btn action_btn btn-danger w-100 mt-2" onclick="cancelOrder();">Cancelar</a>
                         </div>
                         <div class="col-6">
-                            <a class="btn action_btn btn-outline-secondary w-100 mt-2" onclick="printOrder();">Imprimir</a>
+                            <a class="btn action_btn btn-outline-secondary w-100 mt-2"
+                                onclick="printOrder();">Imprimir</a>
                             <a class="btn action_btn btn-success w-100 mt-2" onclick="chargeOrder();">Cobrar</a>
                         </div>
-                        
+
                     </div>
                 </div>
             </fieldset>
@@ -197,12 +229,18 @@ function obtenerFechaActual() {
     return `${diaSemana}, ${diaMes} de ${mes}`;
 }
 
-
 $(document).ready(function() {
-
     $("#date").html(obtenerFechaActual());
 });
 </script>
+
+<script src="<?php echo __ROOT__; ?>/assets/js/mixitup.min.js"></script>
+
+<script>
+var containerEl = document.querySelector('.container');
+var mixer = mixitup(containerEl);
+</script>
+
 
 <style>
 body {
@@ -273,7 +311,8 @@ body {
     max-width: 100%;
     border-radius: 10px 10px 0px 0px;
 }
-.item_viewed_content{
+
+.item_viewed_content {
     background-color: #386375;
     border-radius: 0px 0px 10px 10px;
 }
@@ -323,21 +362,22 @@ body {
     border-radius: 5px;
 }
 
-.categories_selector_inner_container a{
+.categories_selector_inner_container a {
     padding: 5px;
 }
-.categories_selector_inner_container a:hover{
+
+.categories_selector_inner_container a:hover {
     padding: 5px;
     background-color: #557785;
 
 }
 
-.categories_selector_inner_container a.active{
+.categories_selector_inner_container a.active {
     background-color: #386375;
     padding: 5px;
 }
 
-.category-product{
+.category-product {
     background-color: #4f7f94;
     border-radius: 10px;
     display: flex;
@@ -357,54 +397,65 @@ body {
     display: flex;
     flex-direction: column;
     border-radius: 5px;
-    
+
 }
 
-.article_image{
+.article_image {
     position: absolute;
-    width: 100%; 
+    width: 100%;
     height: 100%;
     object-fit: cover;
     z-index: 1;
 }
+
 .text-content {
-    z-index: 2; /* Garantiza que el texto esté encima de la imagen */
-    color: white; /* Color del texto para mejor visibilidad */
+    z-index: 2;
+    /* Garantiza que el texto esté encima de la imagen */
+    color: white;
+    /* Color del texto para mejor visibilidad */
     font-size: 10px;
 }
-.date, .title {
+
+.date,
+.title {
     backdrop-filter: blur(1px);
-    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente para mejorar legibilidad */
-    padding: 5px 10px; /* Padding para el texto */
-    border-radius: 5px; /* Bordes redondeados */
-    text-align: left; /* Alineación del texto a la izquierda */
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Fondo oscuro semitransparente para mejorar legibilidad */
+    padding: 5px 10px;
+    /* Padding para el texto */
+    border-radius: 5px;
+    /* Bordes redondeados */
+    text-align: left;
+    /* Alineación del texto a la izquierda */
 }
 
-.form-select option{
+.form-select option {
     background-color: #004564;
     backdrop-filter: blur(1px);
 }
 
-.order_item{
-    background-color:  #386375;
+.order_item {
+    background-color: #386375;
     border-radius: 5px;
     align-items: center;
     padding: 5px;
     margin: 5px;
 }
-.item_quantity{
-    background-color:#004564;
+
+.item_quantity {
+    background-color: #004564;
     text-align: center;
     border-radius: 5px;
     padding: 2px;
 }
-.item_name{
+
+.item_name {
     font-size: 10px;
 }
-.action_btn{
+
+.action_btn {
     font-size: 15px;
     margin-top: 0px;
     margin-bottom: 10px;
 }
-
 </style>
