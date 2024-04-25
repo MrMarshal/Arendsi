@@ -4,7 +4,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
 
 <nav class="fixed-top">
-    <div class="p-3 container-fluid" style="background-color: #b59f5b">
+    <div class="p-2 container-fluid" style="background-color: #b59f5b">
         <div class="row">
             <div class="col-8">
                 <div class="dropdown">
@@ -61,37 +61,13 @@
 
                 </div>
             </div>
-            <div class="controls">
-                <button type="button" class="control" data-filter="all">All</button>
-                <button type="button" class="control" data-filter=".green">Green</button>
-                <button type="button" class="control" data-filter=".blue">Blue</button>
-                <button type="button" class="control" data-filter=".pink">Pink</button>
-                <button type="button" class="control" data-filter="none">None</button>
-
-                <button type="button" class="control" data-sort="default:asc">Asc</button>
-                <button type="button" class="control" data-sort="default:desc">Desc</button>
-            </div>
-
-            <div class="container">
-                <div class="mix green"></div>
-                <div class="mix green"></div>
-                <div class="mix blue"></div>
-                <div class="mix pink"></div>
-                <div class="mix green"></div>
-                <div class="mix blue"></div>
-                <div class="mix pink"></div>
-                <div class="mix blue"></div>
-
-                <div class="gap"></div>
-                <div class="gap"></div>
-                <div class="gap"></div>
-            </div>
 
             <div class="categories_selector_bar">
                 <div class="categories_selector_inner_container">
-                    <a href="#category1">Categoría 1</a>
-                    <a href="#category2">Categoría 2</a>
-                    <a href="#category3">Categoría 3</a>
+                    <a data-filter="all" href="#category1">Todo</a>
+                    <a data-filter=".category-a" href="#category1">Categoría 1</a>
+                    <a data-filter=".category-b" href="#category2">Categoría 2</a>
+                    <a data-filter=".category-c" href="#category3">Categoría 3</a>
                 </div>
             </div>
             <div class="container category-product">
@@ -120,7 +96,8 @@
                         </div>
                         <div class="row" style="margin-top: 5px; border-bottom: 1px solid white;">
                             <div class="col-2" style="font-size: 12px;">Uds.</div>
-                            <div class="col-8" style="font-size: 12px;">Producto</div>
+                            <div class="col-6" style="font-size: 12px;">Producto</div>
+                            <div class="col-4" style="font-size: 10px;"> Orden #00234</div>
                         </div>
                         <div class="col-12 container" id="order_items_container">
                             <div class="row order_item">
@@ -160,7 +137,7 @@ api_post("tables/GetAllTables").then(res => {
     res.forEach(t => {
         tables_s += `<option value="${t.id}">${t.name}</option>`;
         $("#tables_" + t.location_id).append(`
-                <a onclick="showTable(${t.id})" class="btn btn-outline-info">${t.name}</a>
+                <a onclick="showTable(${t.id})" class="btn table_available">${t.name}</a>
             `);
     });
     $("#tables_select").html(tables_s);
@@ -172,12 +149,13 @@ api_post("products/GetBestsellers").then(res => {
         prods += `<div class="owl-item">
                         <div
                             class="item_viewed_item discount d-flex flex-column align-items-center justify-content-center text-center">
-                            <div class="item_viewed_image"><img
-                                    src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560924153/alcatel-smartphones-einsteiger-mittelklasse-neu-3m.jpg"
-                                    alt=""></div>
-                            <div class="item_viewed_content text-center">
-                                <div class="item_viewed_price">$${p.price}</div>
-                                <div class="item_viewed_name"><a href="#">${p.name}</a></div>
+                            
+                            <div class="product-card">
+                                <img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560924153/alcatel-smartphones-einsteiger-mittelklasse-neu-3m.jpg" alt="Producto">
+                                <div class="product-info">
+                                    <h3>${p.name}</h3>
+                                    <p>$${p.price}</p>
+                                </div>
                             </div>
                         </div>
                     </div>`;
@@ -212,7 +190,12 @@ function showCurrentOrder() {
 }
 </script>
 
-
+<!-- Categorizador de productos -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mixitup/3.3.1/mixitup.min.js"></script>
+<script>
+var containerEl = document.querySelector('#categories_container');
+var mixer = mixitup(containerEl);
+</script>
 
 <script type="text/javascript">
 function obtenerFechaActual() {
@@ -278,6 +261,21 @@ body {
 #tables_select {
     background-color: transparent !important;
 
+}
+
+.table_available {
+    background-color: transparent;
+    border-color: #0dcaf0;
+}
+
+.table_opencheck {
+    background-color: #ff8533;
+    border-color: #ff8533;
+}
+
+.table_closedcheck {
+    background-color: #ff3333;
+    border-color: #ff3333;
 }
 </style>
 
@@ -350,7 +348,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 15px;
+    margin-top: 10px;
     margin-bottom: 10px;
 }
 
