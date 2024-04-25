@@ -3,7 +3,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
 
 <nav class="fixed-top">
-    <div class="p-3 container-fluid" style="background-color: #b59f5b">
+    <div class="p-2 container-fluid" style="background-color: #b59f5b">
         <div class="row">
             <div class="col-8">
                 <div class="dropdown">
@@ -60,28 +60,52 @@
 
                 </div>
             </div>
+            
             <div class="categories_selector_bar">
                 <div class="categories_selector_inner_container">
-                    <a href="#category1">Categoría 1</a>
-                    <a href="#category2">Categoría 2</a>
-                    <a href="#category3">Categoría 3</a>
+                    <a data-filter="all" href="#category1">Todo</a>
+                    <a data-filter=".category-a" href="#category1">Categoría 1</a>
+                    <a data-filter=".category-b" href="#category2">Categoría 2</a>
+                    <a data-filter=".category-c" href="#category3">Categoría 3</a>
                 </div>
             </div>
-            <div class="container category-product">
-            <div class="article_card">
-                    <img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560924153/alcatel-smartphones-einsteiger-mittelklasse-neu-3m.jpg" alt="article-cover" class="article_image">
-                    <div class="text-content">
-                        <p class="title">$60 <br> Capuchino Cream</p>
+            <div class="container category-product" id="categories_container">
+                <div class="mix category-a product-card">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/Cappuccino_PeB.jpg" alt="Producto">
+                    <div class="product-info">
+                        <h3>Capuchino</h3>
+                        <p>$60.XX</p>
                     </div>
                 </div>
-                
+                <div class="mix category-b product-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfYXlOqhT4Qpm8UFqMvlkYWRYWSg2rNXC-_GWzE-tl4sGteSW_5GYwfHryRYkDbr2x7EA&usqp=CAU" alt="Producto">
+                    <div class="product-info">
+                        <h3>Capuchino Cream</h3>
+                        <p>$60.XX</p>
+                    </div>
+                </div>
+                <div class="mix category-c product-card">
+                    <img src="https://www.tasteofhome.com/wp-content/uploads/2023/03/TOH-espresso-GettyImages-1291298315-JVcrop.jpg" alt="Producto">
+                    <div class="product-info">
+                        <h3>Espresso Doble</h3>
+                        <p>$60.XX</p>
+                    </div>
+                </div>
+                <div class="mix category-a product-card">
+                    <img src="https://images.immediate.co.uk/production/volatile/sites/30/2020/08/flat-white-d8ada0f.jpg" alt="Producto">
+                    <div class="product-info">
+                        <h3>Flat white</h3>
+                        <p>$60.XX</p>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-4">
             <fieldset>
                 <div class="container blue-box">
                     <div class="row">
-                        <div class="col-7" style="font-size: 15px;" ># Mesa</div>
+                        <div class="col-4" style="font-size: 15px;" ># Mesa</div>
+                        <div class="col-3" style="font-size: 12px;" >#00234</div>
                         <div class="col-5" style="font-size: 15px; text-align: right;">Total</div>
                         
                         <div class="col-7">
@@ -91,7 +115,8 @@
                         </div>
                         <div class="row" style="margin-top: 5px; border-bottom: 1px solid white;">
                             <div class="col-2" style="font-size: 12px;">Uds.</div>
-                            <div class="col-8" style="font-size: 12px;">Producto</div>
+                            <div class="col-6" style="font-size: 12px;">Producto</div>
+                            <div class="col-4" style="font-size: 10px;"> Orden #00234</div>
                         </div>
                         <div class="col-12 container" id="order_items_container">
                             <div class="row order_item">
@@ -128,7 +153,7 @@ api_post("tables/GetAllTables").then(res => {
     res.forEach(t => {
         tables_s += `<option value="${t.id}">${t.name}</option>`;
         $("#tables_" + t.location_id).append(`
-                <a onclick="showTable(${t.id})" class="btn btn-outline-info">${t.name}</a>
+                <a onclick="showTable(${t.id})" class="btn table_available">${t.name}</a>
             `);
     });
     $("#tables_select").html(tables_s);
@@ -140,12 +165,13 @@ api_post("products/GetBestsellers").then(res => {
         prods += `<div class="owl-item">
                         <div
                             class="item_viewed_item discount d-flex flex-column align-items-center justify-content-center text-center">
-                            <div class="item_viewed_image"><img
-                                    src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560924153/alcatel-smartphones-einsteiger-mittelklasse-neu-3m.jpg"
-                                    alt=""></div>
-                            <div class="item_viewed_content text-center">
-                                <div class="item_viewed_price">$${p.price}</div>
-                                <div class="item_viewed_name"><a href="#">${p.name}</a></div>
+                            
+                            <div class="product-card">
+                                <img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560924153/alcatel-smartphones-einsteiger-mittelklasse-neu-3m.jpg" alt="Producto">
+                                <div class="product-info">
+                                    <h3>${p.name}</h3>
+                                    <p>$${p.price}</p>
+                                </div>
                             </div>
                         </div>
                     </div>`;
@@ -180,7 +206,12 @@ function showCurrentOrder() {
 }
 </script>
 
-
+<!-- Categorizador de productos -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mixitup/3.3.1/mixitup.min.js"></script>
+<script>
+    var containerEl = document.querySelector('#categories_container');
+    var mixer = mixitup(containerEl);
+</script>
 
 <script type="text/javascript">
 function obtenerFechaActual() {
@@ -240,6 +271,19 @@ body {
 #tables_select {
     background-color: transparent !important;
 
+}
+
+.table_available{
+    background-color: transparent;
+    border-color: #0dcaf0;
+}
+.table_opencheck{
+    background-color: #ff8533;
+    border-color: #ff8533;
+}
+.table_closedcheck{
+    background-color: #ff3333;
+    border-color: #ff3333;
 }
 </style>
 
@@ -311,7 +355,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 15px;
+    margin-top: 10px;
     margin-bottom: 10px;
 }
 
@@ -407,6 +451,46 @@ body {
     font-size: 15px;
     margin-top: 0px;
     margin-bottom: 10px;
+}
+
+
+
+/* Clases para el card de los productos */
+.product-card {
+  width: 80px;
+  height: 80px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+}
+
+.product-card img {
+  flex: 1;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+.product-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 5px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.product-info h3,
+.product-info p {
+  margin: 0;
+  font-size: 10px;
+  line-height: 1.2;
 }
 
 </style>
