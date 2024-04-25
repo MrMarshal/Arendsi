@@ -14,6 +14,18 @@
             return $prods;
         }
 
+        function GetActiveProducts($data) {
+            $prods = [];
+            $user = ["branch_id"=>1];
+            foreach ($this->GetList(self::TABLE_PRODUCTS,"section_id = ".$data->get("section")." AND branch_id = ".$user['branch_id']." AND status = 1") as $prod) {
+                $prod['category'] = $this->GetById(self::TABLE_CATEGORIES,$prod['category_id']);
+                $prod['subcategory'] = $this->GetById(self::TABLE_SUBCATEGORIES,$prod['subcategory_id']);
+                $prod['image'] = $this->GetByCondition(self::TABLE_IMAGES,"product_id = ".$prod['id']." AND status = 1");
+                $prods[] = $prod;
+            }
+            return $prods;
+        }
+
         function SaveProduct($data) {
             $id = $data->id;
             if ($id == 0){

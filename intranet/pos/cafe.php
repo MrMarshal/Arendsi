@@ -1,6 +1,5 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
-<link rel="stylesheet" href="<?php echo __ROOT__; ?>/assets/css/mixitup.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
 
 <nav class="fixed-top">
@@ -13,7 +12,7 @@
                         Pétalos Café
                     </h3>
                     <div class="dropdown-menu" aria-labelledby="sectionBtn">
-                        <a class="dropdown-item" href="#" style="color:#000000 !important;">Arendsi Boutique</a>
+                        <a class="dropdown-item" href="<?php echo __ROOT__; ?>/boutique" style="color:#000000 !important;">Arendsi Boutique</a>
                     </div>
                 </div>
             </div>
@@ -70,7 +69,7 @@
                     <a data-filter=".category-c" href="#category3">Categoría 3</a>
                 </div>
             </div>
-            <div class="container category-product">
+            <div class="container category-product" id="categories_container">
                 <div class="article_card">
                     <img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560924153/alcatel-smartphones-einsteiger-mittelklasse-neu-3m.jpg"
                         alt="article-cover" class="article_image">
@@ -147,8 +146,7 @@ api_post("products/GetBestsellers").then(res => {
     let prods = "";
     res.forEach(p => {
         prods += `<div class="owl-item">
-                        <div
-                            class="item_viewed_item discount d-flex flex-column align-items-center justify-content-center text-center">
+                        <div class="item_viewed_item discount d-flex flex-column align-items-center justify-content-center text-center">
                             
                             <div class="product-card">
                                 <img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560924153/alcatel-smartphones-einsteiger-mittelklasse-neu-3m.jpg" alt="Producto">
@@ -217,13 +215,45 @@ $(document).ready(function() {
 });
 </script>
 
-<script src="<?php echo __ROOT__; ?>/assets/js/mixitup.min.js"></script>
+<style>
+/* Clases para el card de los productos */
+.product-card {
+    width: 80px;
+    height: 80px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+}
 
-<script>
-var containerEl = document.querySelector('.container');
-var mixer = mixitup(containerEl);
-</script>
+.product-card img {
+    flex: 1;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
 
+.product-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 5px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.product-info h3,
+.product-info p {
+    margin: 0;
+    font-size: 10px;
+    line-height: 1.2;
+}
+</style>
 
 <style>
 body {

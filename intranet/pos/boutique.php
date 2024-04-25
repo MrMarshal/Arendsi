@@ -9,10 +9,11 @@
                 <div class="dropdown">
                     <h3 class="dropdown-toggle" type="button" id="sectionBtn" data-bs-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
-                        Pétalos Café
+                        Arensdi Boutique
                     </h3>
                     <div class="dropdown-menu" aria-labelledby="sectionBtn">
-                        <a class="dropdown-item" href="#" style="color:#000000 !important;">Arendsi Boutique</a>
+                        <a class="dropdown-item" href="<?php echo __ROOT__; ?>/cafe"
+                            style="color:#000000 !important;">Pétalos café</a>
                     </div>
                 </div>
             </div>
@@ -39,7 +40,7 @@
 
 <div class="container-fluid pt-5 mt-5">
     <div class="row h-100 justify-content-center">
-       
+
         <div class="col-8">
             <div class="categories_selector_bar">
                 <div class="categories_selector_inner_container">
@@ -49,38 +50,11 @@
                     <a data-filter=".category-c" href="#category3">Categoría 3</a>
                 </div>
             </div>
-            <div class="container category-product" id="categories_container">
-                <div class="mix category-a product-card">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/Cappuccino_PeB.jpg" alt="Producto">
-                    <div class="product-info">
-                        <h3>Capuchino</h3>
-                        <p>$60.XX</p>
-                    </div>
-                </div>
-                <div class="mix category-b product-card">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfYXlOqhT4Qpm8UFqMvlkYWRYWSg2rNXC-_GWzE-tl4sGteSW_5GYwfHryRYkDbr2x7EA&usqp=CAU" alt="Producto">
-                    <div class="product-info">
-                        <h3>Capuchino Cream</h3>
-                        <p>$60.XX</p>
-                    </div>
-                </div>
-                <div class="mix category-c product-card">
-                    <img src="https://www.tasteofhome.com/wp-content/uploads/2023/03/TOH-espresso-GettyImages-1291298315-JVcrop.jpg" alt="Producto">
-                    <div class="product-info">
-                        <h3>Espresso Doble</h3>
-                        <p>$60.XX</p>
-                    </div>
-                </div>
-                <div class="mix category-a product-card">
-                    <img src="https://images.immediate.co.uk/production/volatile/sites/30/2020/08/flat-white-d8ada0f.jpg" alt="Producto">
-                    <div class="product-info">
-                        <h3>Flat white</h3>
-                        <p>$60.XX</p>
-                    </div>
-                </div>
+            <div class="container category-product" id="products_container">
+
             </div>
 
-            
+
 
             <div class="item_viewed_title_container">
                 <h4 class="item_viewed_title">Sugerencias</h4>
@@ -90,32 +64,29 @@
 
                 </div>
             </div>
-            
+
         </div>
         <div class="col-4">
             <fieldset>
                 <div class="container blue-box">
                     <div class="row">
-                        <div class="col-7" style="font-size: 15px;" ># cuenta</div>
-                        <div class="col-5" style="font-size: 15px; text-align: right;">Total</div>
-                        
-                        <div class="col-7">
-                            <select id="tables_select" class="form-select"></select>
+                        <div class="col-7" style="font-size: 15px;">
+                            <!--# cuenta-->
                         </div>
-                        <div class="col-5 " style="font-size: 20px; text-align: right;"><span id="order_total">$00.00</span>
+                        <div class="col-5" style="font-size: 15px; text-align: right;">Total</div>
+
+                        <div class="col-7">
+                            <!--<select id="tables_select" class="form-select"></select>-->
+                        </div>
+                        <div class="col-5 " style="font-size: 20px; text-align: right;"><span
+                                id="order_total">$00.00</span>
                         </div>
                         <div class="row" style="margin-top: 5px; border-bottom: 1px solid white;">
                             <div class="col-2" style="font-size: 12px;">Uds.</div>
                             <div class="col-8" style="font-size: 12px;">Producto</div>
                         </div>
-                        <div class="col-12 container" id="order_items_container">
-                            <div class="row order_item">
-                                <div class = "col-1 item_quantity">3</div>
-                                <div class = "col-8 item_name"> Champurrado de chocolate <br> $50</div>
-                                <div class="col-2">
-                                    <button type="button" class="btn btn-sm btn-primary text-center"><i class="fa fa-trash"></i></button>
-                                    </div>
-                            </div>
+                        <div class="row" id="order_items_container">
+
                         </div>
                         <div class="col-6">
                             <a class="btn action_btn btn-danger w-100 mt-2" onclick="cancelOrder();">Cancelar</a>
@@ -123,7 +94,7 @@
                         <div class="col-6">
                             <a class="btn action_btn btn-success w-100 mt-2" onclick="chargeOrder();">Cobrar</a>
                         </div>
-                        
+
                     </div>
                 </div>
             </fieldset>
@@ -134,10 +105,10 @@
             <h5 class="item_viewed_title">Buscar Producto</h5>
         </div>
         <div class="col-5 container blue-box">
-            <div class="row">        
+            <div class="row">
                 <div class="col-5">
                     Codigo de barra o QR
-                    <div class = "scanner"></div>
+                    <div class="scanner"></div>
                 </div>
                 <div class="col-4">
                     <label for="descripcion">Descripción:</label>
@@ -148,18 +119,20 @@
                     <a class="btn action_btn btn-primary w-70 mt-2" onclick="chargeOrder();">Buscar</a>
                 </div>
             </div>
-            
+
         </div>
         <div class="col-5 container blue-box">
             Resultado de busqueda
-            <div class = "scanner"></div>
+            <div class="scanner"></div>
         </div>
     </div>
 </div>
 
 <script type="text/javascript">
-let tables = [];
-let current_table = 0;
+let orders = [];
+let current_order = 0;
+let products = [];
+
 
 api_post("tables/GetAllTables").then(res => {
     tables = res;
@@ -173,13 +146,30 @@ api_post("tables/GetAllTables").then(res => {
     $("#tables_select").html(tables_s);
 });
 
+api_post("products/GetActiveProducts", {
+    section: 1
+}).then(res => {
+    products = res;
+    let prods = "";
+    res.forEach(p => {
+        prods += `<div class="mix category-a product-card" onclick="addProduct(${p.id})">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/Cappuccino_PeB.jpg" alt="Producto">
+                    <div class="product-info">
+                        <h3>${p.name}</h3>
+                        <p>$${p.price}</p>
+                    </div>
+                </div>`;
+    });
+
+    $("#products_container").html(prods);
+});
+
 api_post("products/GetBestsellers").then(res => {
     let prods = "";
     res.forEach(p => {
-        prods += `<div class="owl-item">
+        prods += `<div class="owl-item" onclick="addProduct(${p.id})">
                         <div
                             class="item_viewed_item discount d-flex flex-column align-items-center justify-content-center text-center">
-                            
                             <div class="product-card">
                                 <img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560924153/alcatel-smartphones-einsteiger-mittelklasse-neu-3m.jpg" alt="Producto">
                                 <div class="product-info">
@@ -209,10 +199,43 @@ api_post("products/GetBestsellers").then(res => {
             }
         });
     }
-})
+});
 
-function showTable(id) {
+function addProduct(id) {
+    let product = products.find(x => x.id == id);
+    if (!orders[current_order]) orders[current_order] = [];
+    let index = orders[current_order].findIndex(x => x.product_id == id);
+    if (index != -1) {
+        orders[current_order][index].quantity++;
+    } else {
+        orders[current_order].push({
+            product_id: id,
+            quantity: 1,
+            product
+        });
+    }
+    printOrder();
+}
 
+function printOrder() {
+    let ords = "";
+    orders[current_order].forEach((o, index) => {
+        ords += `<div class="container mx-0 px-0" id="order_item_${index}">
+                    <div class="row order_item">
+                        <div id="order_item_quantity_${index}" class="col-1 item_quantity">${o.quantity}</div>
+                        <div class="col-3 px-0 ml-4">
+                            <button type="button" onclick="deleteOrder()" class="btn btn-sm btn-success text-center" style="margin-left:2px;"><i class="fa fa-plus"></i></button>
+                            <button type="button" onclick="deleteOrder()" class="btn btn-sm btn-primary text-center" style="margin-left:5px;"><i class="fa fa-minus"></i></button>
+                        </div>
+                        <div class="col-6 item_name px-0">${o.product.name} <br> $${o.product.price}</div>
+                        <div class="col-1">
+                            <button type="button" onclick="deleteOrder()" class="btn btn-sm btn-danger text-center"><i class="fa fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>`;
+    });
+
+    $("#order_items_container").html(ords);
 }
 
 function showCurrentOrder() {
@@ -223,8 +246,8 @@ function showCurrentOrder() {
 <!-- Categorizador de productos -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mixitup/3.3.1/mixitup.min.js"></script>
 <script>
-    var containerEl = document.querySelector('#categories_container');
-    var mixer = mixitup(containerEl);
+var containerEl = document.querySelector('#products_container');
+var mixer = mixitup(containerEl);
 </script>
 
 
@@ -320,7 +343,8 @@ body {
     max-width: 100%;
     border-radius: 10px 10px 0px 0px;
 }
-.item_viewed_content{
+
+.item_viewed_content {
     background-color: #386375;
     border-radius: 0px 0px 10px 10px;
 }
@@ -369,28 +393,29 @@ body {
     border-radius: 5px;
 }
 
-.categories_selector_inner_container a{
+.categories_selector_inner_container a {
     padding: 5px;
 }
-.categories_selector_inner_container a:hover{
+
+.categories_selector_inner_container a:hover {
     padding: 5px;
     background-color: #557785;
 
 }
 
-.categories_selector_inner_container a.active{
+.categories_selector_inner_container a.active {
     background-color: #386375;
     padding: 5px;
 }
 
-.category-product{
+.category-product {
     background-color: #4f7f94;
     border-radius: 10px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
     padding: 10px;
-    margin-bottom:10px;
+    margin-bottom: 10px;
     gap: 5px;
 
 }
@@ -404,99 +429,118 @@ body {
     display: flex;
     flex-direction: column;
     border-radius: 5px;
-    
+
 }
 
-.article_image{
+.article_image {
     position: absolute;
-    width: 100%; 
+    width: 100%;
     height: 100%;
     object-fit: cover;
     z-index: 1;
 }
+
 .text-content {
-    z-index: 2; /* Garantiza que el texto esté encima de la imagen */
-    color: white; /* Color del texto para mejor visibilidad */
+    z-index: 2;
+    /* Garantiza que el texto esté encima de la imagen */
+    color: white;
+    /* Color del texto para mejor visibilidad */
     font-size: 10px;
 }
-.date, .title {
+
+.date,
+.title {
     backdrop-filter: blur(1px);
-    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente para mejorar legibilidad */
-    padding: 5px 10px; /* Padding para el texto */
-    border-radius: 5px; /* Bordes redondeados */
-    text-align: left; /* Alineación del texto a la izquierda */
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Fondo oscuro semitransparente para mejorar legibilidad */
+    padding: 5px 10px;
+    /* Padding para el texto */
+    border-radius: 5px;
+    /* Bordes redondeados */
+    text-align: left;
+    /* Alineación del texto a la izquierda */
 }
 
-.form-select option{
+.form-select option {
     background-color: #004564;
     backdrop-filter: blur(1px);
 }
 
-.order_item{
-    background-color:  #386375;
+#order_items_container{
+    display: block;
+}
+
+.order_item {
+    background-color: #386375;
     border-radius: 5px;
     align-items: center;
     padding: 5px;
-    margin: 5px;
+    margin-top: 5px;
 }
-.item_quantity{
-    width: 25px; 
+
+.item_quantity {
+    width: 25px;
     height: 25px;
-    background-color:#004564;
+    background-color: #004564;
     text-align: center;
     border-radius: 5px;
     padding: 2px;
 }
-.item_name{
+
+.item_name {
     font-size: 10px;
 }
-.action_btn{
+
+.action_btn {
     font-size: 15px;
     margin-top: 0px;
     margin-bottom: 10px;
 }
+
 .scanner {
     width: 150px;
     height: 150px;
-    border: 3px solid white; /* Puedes ajustar el grosor del borde aquí */
+    border: 3px solid white;
+    /* Puedes ajustar el grosor del borde aquí */
     border-radius: 5px;
-    margin-top: 5px  10px 10px 10px;
+    margin-top: 5px 10px 10px 10px;
 }
 
-        /* Clases para el card de los productos */
-        .product-card {
-  width: 80px;
-  height: 80px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  overflow: hidden;
-  position: relative;
-  display: flex;
+/* Clases para el card de los productos */
+.product-card {
+    width: 80px;
+    height: 80px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
 }
 
 .product-card img {
-  flex: 1;
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: cover;
+    flex: 1;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
 }
 
 .product-info {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
-  padding: 5px;
-  box-sizing: border-box;
-  text-align: center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 5px;
+    box-sizing: border-box;
+    text-align: center;
 }
+
 .product-info h3,
 .product-info p {
-  margin: 0;
-  font-size: 10px;
-  line-height: 1.2;
+    margin: 0;
+    font-size: 10px;
+    line-height: 1.2;
 }
 </style>
