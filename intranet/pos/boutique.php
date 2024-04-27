@@ -1,6 +1,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mixitup/3.3.1/mixitup.min.js"></script>
+
 
 <nav class="fixed-top">
     <div class="p-2 container-fluid" style="background-color: #b59f5b">
@@ -43,7 +45,7 @@
 
         <div class="col-8">
             <div class="categories_selector_bar">
-                <div class="categories_selector_inner_container">
+                <div class="categories_selector_inner_container" id="categories_container">
                 </div>
             </div>
             <div class="container category-product" id="products_container">
@@ -100,7 +102,7 @@
         <div class="item_viewed_title_container">
             <h5 class="item_viewed_title">Buscar Producto</h5>
         </div>
-        <div class="col-5 container blue-box">
+        <div class="col-5 container blue-box" id="qr_reader_result">
             <div class="row">
                 <div class="col-5">
                     Codigo QR
@@ -145,23 +147,31 @@ api_post("tables/GetAllTables").then(res => {
     $("#tables_select").html(tables_s);
 });
 
-api_post("categories/GetAllCategories", {
-    section: 2
-}).then(res => {
-    categories = res;
-    let cats = `<a data-filter="all" href="#category1">Todo</a>`;
-    categories.forEach(cat => {
-        cats += `<a data-filter=".category-a" href="#category1">Categoría 1</a>`;
+function getCategories() {
+    api_post("categories/GetAllCategories", {
+        section: 2
+    }).then(res => {
+        console.log("Categories");
+        console.log(res);
+        categories = res;
+        let cats = `<a data-filter="all">Todo</a>`;
+        categories.forEach(cat => {
+            cats += `<a data-filter=".category-${cat.id}">${cat.name}</a>`;
+        });
+        $("#categories_container").html(cats);
+        var containerEl = document.querySelector('#products_container');
+        var mixer = mixitup(containerEl);
     });
-});
+}
 
 api_post("products/GetActiveProducts", {
     section: 2
 }).then(res => {
+    getCategories();
     products = res;
     let prods = "";
     res.forEach(p => {
-        prods += `<div class="mix category-a product-card" onclick="addProduct(${p.id})">
+        prods += `<div class="mix category-${p.category.id} product-card" onclick="addProduct(${p.id})">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/Cappuccino_PeB.jpg" alt="Producto">
                     <div class="product-info">
                         <h3>${p.name}</h3>
@@ -173,8 +183,8 @@ api_post("products/GetActiveProducts", {
     $("#products_container").html(prods);
 });
 
-api_post("products/GetBestsellers",{
-    section:2
+api_post("products/GetBestsellers", {
+    section: 2
 }).then(res => {
     let prods = "";
     res.forEach(p => {
@@ -282,13 +292,6 @@ function deleteOrder(index) {
 }
 </script>
 
-<!-- Categorizador de productos -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mixitup/3.3.1/mixitup.min.js"></script>
-<script>
-var containerEl = document.querySelector('#products_container');
-var mixer = mixitup(containerEl);
-</script>
-
 
 <script type="text/javascript">
 function obtenerFechaActual() {
@@ -319,23 +322,21 @@ var videoElement = null;
 import('<?php echo __ROOT__; ?>/assets/js/qr/qr-scanner.js').then((module) => {
     videoElement = document.getElementById("qr-scanner");
     qrScanner = new QrScanner(videoElement, result => {
-        console.log('decoded qr code:', result);
         qrScanner.stop();
         try {
             let res = JSON.parse(result);
-            $("#cui").val(res.cui);
-            $("#cui").css("border-color", "green");
-            $("#cui").css("background-color", "#e1ffe1");
-            $("#qr-result").html("CUI asignado correctamente");
+            console.log(res);
+            $("#qr_reader_result").css("border-color", "#84bd84");
+            $("#qr_reader_result").css("background-color", "#84bd84");
             getProductByCode(res.cui);
         } catch (error) {
-            $("#cui").css("border-color", "red");
-            $("#cui").css("background-color", "#ffc5c5");
+            $("#qr_reader_result").css("border-color", "red");
+            $("#qr_reader_result").css("background-color", "#894848");
             console.log(error);
         }
         setTimeout(() => {
-            $("#cui").css("border-color", "#ced4da");
-            $("#cui").css("background-color", "white");
+            $("#qr_reader_result").css("border-color", "#4f7f94");
+            $("#qr_reader_result").css("background-color", "#4f7f94");
             startScanner();
         }, 500);
     });
@@ -344,11 +345,20 @@ import('<?php echo __ROOT__; ?>/assets/js/qr/qr-scanner.js').then((module) => {
 });
 
 function getProductByCode(code) {
-    api_post("products/getProductByCode", {
-        code
-    }).then(res => {
-        console.log(res);
-    })
+    console.log(code);
+    let product = products.find(x => x.code == code);
+    if (product) {
+        addProduct(product.id);
+    } else {
+        $("#qr_reader_result").css("border-color", "red");
+        $("#qr_reader_result").css("background-color", "#894848");
+        error("Producto no registrado en sistema");
+        setTimeout(() => {
+            $("#qr_reader_result").css("border-color", "#4f7f94");
+            $("#qr_reader_result").css("background-color", "#4f7f94");
+            startScanner();
+        }, 500);
+    }
 }
 
 function startScanner() {
