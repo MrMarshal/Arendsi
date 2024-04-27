@@ -114,7 +114,7 @@
                     <br>
                     <label for="precio">Precio:</label>
                     <input type="number" id="precio" name="precio">
-                    <a class="btn action_btn btn-primary w-70 mt-2" onclick="chargeOrder();">Buscar</a>
+                    <a class="btn action_btn btn-primary w-70 mt-2" id="openModal">Buscar</a>
                 </div>
             </div>
 
@@ -123,8 +123,154 @@
             Resultado de busqueda
             <div class="scanner"></div>
         </div>
+        <!-- modal de resultado de busquedas -->
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <div class="container blue-box">
+                    <div class="row"> 
+                        <div class="col-10">
+                            <h4 class="item_viewed_title">Resultados de busqueda</h4>
+                        </div>
+                        <div class="col-2">
+                            <span class="close-button">×</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="container" id="container_search_results">
+                            <div class="row item_search_result">
+                                <div class="col-3 item_image_result">
+                                    <img src="https://www.nbcstore.com/cdn/shop/products/51dg2z5ri8l._sl1000__2_1.jpg?v=1682618044" alt="Producto">
+                                </div>
+                                <div class="col-6 item_description_result">
+                                    <h6 class="item_viewed_title">Taza "World's best boss"</h6>
+                                    <h6 class="item_viewed_title">$150</h6>
+                                    <p>Ideal para cualquier líder, esta taza de cerámica presenta el mensaje "World's Best Boss" 
+                                        en negrita, perfecta para café diario.</p>
+                                </div>
+                                <div class="col-3">
+                                    <a class="btn action_btn btn-success w-100 mt-2">Agregar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-4">
+                            <a class="btn action_btn btn-danger w-100 mt-2 close-button" >Cancelar</a>
+                        </div>
+                    </div>                      
+                </div>
+            </div>
+        </div>
+        <!-- aqui acaba el modal -->
+
     </div>
 </div>
+<style>     /* Styles para el modal */
+    #container_search_results{
+        height: 400px;
+        overflow: scroll;
+        padding: 10px 20px 10px 20px;
+    }
+
+    .item_search_result{
+        height: 120px;
+        background-color: #386375;
+        border-radius: 5px;
+        padding: 5px;
+        margin-bottom: 5px;    
+    }
+    .item_image_result{
+        height: 100px;
+        overflow: hidden;
+        position: relative;
+        display: flex;
+    }
+    .item_image_result img {
+        flex: 1; /* La imagen ocupa todo el espacio disponible */
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100%; 
+        border-radius: 5px;
+        object-fit: cover;
+    }
+    .item_description_result{
+        text-align: justify;
+    }
+    .item_description_result p{
+        font-size: 12px;
+    }
+
+    .modal {
+        display: none; /* Oculto por defecto */
+        position: fixed; /* Se queda fijo en la pantalla */
+        z-index: 1; /* Se muestra encima del contenido */
+        left: 0;
+        top: 0;
+        width: 100%; /* Ancho completo */
+        height: 100%; /* Alto completo */
+        overflow: hidden; /* Habilita scroll si es necesario */
+        background-color: rgb(0,0,0); /* Color de fondo */
+        background-color: rgba(0,0,0,0.4); /* Negro con transparencia */
+    }
+
+    /* Contenido del modal */
+    .modal-content {
+        background-color: #4f7f94;
+        margin: 15% auto; /* 15% desde el top y centrado horizontalmente */
+        padding-top: 5px;
+        padding-bottom: 10px;
+        border: 1px solid #888;
+        border-radius: 10px;
+        width: 60%; /* Ancho del contenido */
+    }
+    /* Botón para cerrar el modal */
+    .close-button {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close-button:hover,
+    .close-button:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+</style>
+
+<script> // Codigo para el modal
+    // Obtén el modal
+    var modal = document.getElementById("myModal");
+    // Obtén el botón que abre el modal
+    var btn = document.getElementById("openModal");
+
+    // Obtén el elemento <span> que cierra el modal
+    var closeButtons = document.getElementsByClassName("close-button");
+
+    // Cuando el usuario hace clic en el botón, abre el modal
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // Cuando el usuario hace clic en <span> (x), cierra el modal
+    var closeModal = function() {
+        modal.style.display = "none";
+    };
+    for (var i = 0; i < closeButtons.length; i++) {
+        closeButtons[i].onclick = closeModal;
+    }
+
+    // También cierra el modal si el usuario hace clic fuera de él
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
 
 <script type="text/javascript">
 let orders = [];
