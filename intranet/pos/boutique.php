@@ -99,9 +99,9 @@
         </div>
     </div>
     <div class="row h-100 justify-content-center">
-        <div class="item_viewed_title_container">
-            <h5 class="item_viewed_title">Buscar Producto</h5>
-        </div>
+    <div class="item_viewed_title_container" style="display: flex; justify-content: center;">
+        <h5 class="item_viewed_title">Buscar Producto</h5>
+    </div>
         <div class="col-5 container blue-box" id="qr_reader_result">
             <div class="row">
                 <div class="col-5">
@@ -399,7 +399,7 @@ function printCurrentOrder() {
                     <div class="row order_item">
                         <div id="order_item_quantity_${index}" class="col-1 item_quantity">${o.quantity}</div>
                         <div class="col-3 px-0 ml-4">
-                            <button type="button" onclick="increaseQuantity(${index})" class="btn btn-sm btn-success text-center" style="margin-left:2px;"><i class="fa fa-plus"></i></button>
+                            <button type="button" onclick="increaseQuantity(${index})" class="btn btn-sm btn-success text-center" style="margin-left:5px;"><i class="fa fa-plus"></i></button>
                             <button type="button" onclick="decreaseQuantity(${index})" class="btn btn-sm btn-primary text-center" style="margin-left:5px;"><i class="fa fa-minus"></i></button>
                         </div>
                         <div class="col-6 item_name px-0">${o.product.name} <br> $${o.product.price}</div>
@@ -644,6 +644,7 @@ body {
     background-color: #4f7f94;
     padding: 5px;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     border-radius: 5px;
 }
