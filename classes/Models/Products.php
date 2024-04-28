@@ -54,6 +54,18 @@
             $branch_id = 1;
             return $this->GetByCondition(self::TABLE_PRODUCTS,"code = ".$data->get("code")." AND branch_id = ".$branch_id);
         }
+
+        function SearchProducts($data) {
+            $branch_id = 1;
+            $f = "branch_id = ".$branch_id." AND section_id = ".$data->get('section');
+            if ($data->get('description')!=""){
+                $f .= " AND description LIKE '%".$data->get('description')."%'";
+            }
+            if ($data->get('price')!=""){
+                $f .= " AND price = ".$data->get('price');
+            }
+            return $this->GetList(self::TABLE_PRODUCTS,$f);
+        }
     }
 
 ?>

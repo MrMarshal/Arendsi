@@ -110,56 +110,37 @@
                         <video id="qr-scanner"></video>
                     </div>
                 </div>
-                <div class="col-4">
+                <div class="col-7">
                     <label for="descripcion">Descripción:</label>
-                    <input type="text" id="descripcion" name="descripcion">
-                    <br>
+                    <input class="form-control" type="text" id="search_description" name="descripcion" placeholder="Describe el producto">
                     <label for="precio">Precio:</label>
-                    <input type="number" id="precio" name="precio">
-                    <a class="btn action_btn btn-primary w-70 mt-2" id="openModal">Buscar</a>
+                    <input class="form-control" type="number" id="search_price" name="precio" placeholder="Busca por su precio">
+                    <a class="btn action_btn btn-primary w-100 mt-4" onclick="searchProducts();">Buscar</a>
                 </div>
             </div>
 
         </div>
-        <div class="col-5 container blue-box">
-            Resultado de busqueda
+        <!--<div class="col-5 container blue-box">
+            Resultado de búqueda
             <div class="scanner"></div>
-        </div>
-        <!-- modal de resultado de busquedas -->
-        <div id="myModal" class="modal">
-            <div class="modal-content">
-                <div class="container blue-box">
-                    <div class="row"> 
-                        <div class="col-10">
-                            <h4 class="item_viewed_title">Resultados de busqueda</h4>
-                        </div>
-                        <div class="col-2">
-                            <span class="close-button">×</span>
-                        </div>
+        </div>-->
+
+
+        <div class="modal fade" id="searchResultModal" aria-labelledby="searchResultModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="searchResultModalLabel">Resultados de búsqueda</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="row">
+                    <div class="modal-body" style="height: 400px;overflow: scroll;">
                         <div class="container" id="container_search_results">
-                            <div class="row item_search_result">
-                                <div class="col-3 item_image_result">
-                                    <img src="https://www.nbcstore.com/cdn/shop/products/51dg2z5ri8l._sl1000__2_1.jpg?v=1682618044" alt="Producto">
-                                </div>
-                                <div class="col-6 item_description_result">
-                                    <h6 class="item_viewed_title">Taza "World's best boss"</h6>
-                                    <h6 class="item_viewed_title">$150</h6>
-                                    <p>Ideal para cualquier líder, esta taza de cerámica presenta el mensaje "World's Best Boss" 
-                                        en negrita, perfecta para café diario.</p>
-                                </div>
-                                <div class="col-3">
-                                    <a class="btn action_btn btn-success w-100 mt-2">Agregar</a>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
-                    <div class="row justify-content-center">
-                        <div class="col-4">
-                            <a class="btn action_btn btn-danger w-100 mt-2 close-button" >Cancelar</a>
-                        </div>
-                    </div>                      
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -167,110 +148,134 @@
 
     </div>
 </div>
-<style>     /* Styles para el modal */
-    #container_search_results{
-        height: 400px;
-        overflow: scroll;
-        padding: 10px 20px 10px 20px;
-    }
+<style>
+/* Styles para el modal */
+#container_search_results {
+    padding: 10px 20px 10px 20px;
+}
 
-    .item_search_result{
-        height: 120px;
-        background-color: #386375;
-        border-radius: 5px;
-        padding: 5px;
-        margin-bottom: 5px;    
-    }
-    .item_image_result{
-        height: 100px;
-        overflow: hidden;
-        position: relative;
-        display: flex;
-    }
-    .item_image_result img {
-        flex: 1; /* La imagen ocupa todo el espacio disponible */
-        width: auto;
-        height: auto;
-        max-width: 100%;
-        max-height: 100%; 
-        border-radius: 5px;
-        object-fit: cover;
-    }
-    .item_description_result{
-        text-align: justify;
-    }
-    .item_description_result p{
-        font-size: 12px;
-    }
+.item_search_result {
+    height: 120px;
+    background-color: #386375;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 5px;
+}
 
-    .modal {
-        display: none; /* Oculto por defecto */
-        position: fixed; /* Se queda fijo en la pantalla */
-        z-index: 1; /* Se muestra encima del contenido */
-        left: 0;
-        top: 0;
-        width: 100%; /* Ancho completo */
-        height: 100%; /* Alto completo */
-        overflow: hidden; /* Habilita scroll si es necesario */
-        background-color: rgb(0,0,0); /* Color de fondo */
-        background-color: rgba(0,0,0,0.4); /* Negro con transparencia */
-    }
+.item_image_result {
+    height: 100px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+}
 
-    /* Contenido del modal */
-    .modal-content {
-        background-color: #4f7f94;
-        margin: 15% auto; /* 15% desde el top y centrado horizontalmente */
-        padding-top: 5px;
-        padding-bottom: 10px;
-        border: 1px solid #888;
-        border-radius: 10px;
-        width: 60%; /* Ancho del contenido */
-    }
-    /* Botón para cerrar el modal */
-    .close-button {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-    }
+.item_image_result img {
+    flex: 1;
+    /* La imagen ocupa todo el espacio disponible */
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 5px;
+    object-fit: cover;
+}
 
-    .close-button:hover,
-    .close-button:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
+.modal-backdrop {
+    z-index: 0;
+}
 
+.item_description_result {
+    text-align: justify;
+}
+
+.item_description_result p {
+    font-size: 12px;
+}
+
+.modal {
+    display: none;
+    /* Oculto por defecto */
+    position: fixed;
+    /* Se queda fijo en la pantalla */
+    z-index: 1;
+    /* Se muestra encima del contenido */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Alto completo */
+    overflow: hidden;
+    /* Habilita scroll si es necesario */
+    background-color: rgb(0, 0, 0);
+    /* Color de fondo */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Negro con transparencia */
+}
+
+.modal-dialog {
+    max-width: 90%;
+    width: 90%;
+}
+
+/* Contenido del modal */
+.modal-content {
+    background-color: #4f7f94;
+    margin: 10vh auto;
+    padding-top: 5px;
+    padding-bottom: 10px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    width: 80%;
+    /* Ancho del contenido */
+}
+
+/* Botón para cerrar el modal */
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
 </style>
 
-<script> // Codigo para el modal
-    // Obtén el modal
-    var modal = document.getElementById("myModal");
-    // Obtén el botón que abre el modal
-    var btn = document.getElementById("openModal");
+<script>
+function searchProducts() {
+    api_post("products/SearchProducts", {
+        section:2,
+        description: $("#search_description").val(),
+        price: $("#search_price").val()
+    }).then(res => {
+        console.log(res);
+        let prods = "";
+        res.forEach(pro => {
+            prods += `<div class="row item_search_result">
+                    <div class="col-3 item_image_result">
+                        <img src="https://www.nbcstore.com/cdn/shop/products/51dg2z5ri8l._sl1000__2_1.jpg?v=1682618044" alt="Producto">
+                    </div>
+                    <div class="col-6 item_description_result">
+                        <h6 class="item_viewed_title">${pro.name}</h6>
+                        <h6 class="item_viewed_title">$${pro.price}</h6>
+                        <p>${pro.description}</p>
+                    </div>
+                    <div class="col-3">
+                        <a data-bs-dismiss="modal" class="btn action_btn btn-success w-100 mt-2" onclick="addProduct(${pro.id});">Agregar</a>
+                    </div>
+                </div>`;
+        });
+        $("#container_search_results").html(prods);
+        $("#searchResultModal").modal("show");
+    })
+}
 
-    // Obtén el elemento <span> que cierra el modal
-    var closeButtons = document.getElementsByClassName("close-button");
-
-    // Cuando el usuario hace clic en el botón, abre el modal
-    btn.onclick = function() {
-        modal.style.display = "block";
-    }
-
-    // Cuando el usuario hace clic en <span> (x), cierra el modal
-    var closeModal = function() {
-        modal.style.display = "none";
-    };
-    for (var i = 0; i < closeButtons.length; i++) {
-        closeButtons[i].onclick = closeModal;
-    }
-
-    // También cierra el modal si el usuario hace clic fuera de él
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
+function closeSearchModal(){
+    $("#searchResultModal").modal("hide");
+}
 </script>
 
 
@@ -792,6 +797,10 @@ body {
     margin: 0;
     font-size: 10px;
     line-height: 1.2;
+}
+
+.form-control{
+    color:rgba(0, 0, 0) !important;
 }
 </style>
 
