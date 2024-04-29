@@ -62,8 +62,8 @@
             </div>
 
             <div class="categories_selector_bar">
-                <div class="categories_selector_inner_container" id="categories_container">
-                </div>
+                <ul class="nav nav-pills categories_selector_inner_container" id="categories_container">
+                </ul>
             </div>
             <div class="container category-product" id="products_container">
                 
@@ -180,9 +180,9 @@ function getCategories() {
         console.log("Categories");
         console.log(res);
         categories = res;
-        let cats = `<a data-filter="all">Todo</a>`;
+        let cats = `<li><a data-filter="all">Todo</a></li>`;
         categories.forEach(cat => {
-            cats += `<a data-filter=".category-${cat.id}">${cat.name}</a>`;
+            cats += `<li><a data-filter=".category-${cat.id}">${cat.name}</a></li>`;
         });
         $("#categories_container").html(cats);
         var containerEl = document.querySelector('#products_container');
@@ -433,7 +433,7 @@ body {
 
 .categories_selector_inner_container {
     background-color: #4f7f94;
-    padding: 5px;
+    padding: 10px;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -450,8 +450,9 @@ body {
 
 }
 
-.categories_selector_inner_container a.active {
+.mixitup-control-active{
     background-color: #386375;
+    border-radius:5px;
     padding: 5px;
 }
 
@@ -518,6 +519,7 @@ body {
     align-items: center;
     padding: 5px;
     margin: 5px;
+    margin-left: 1px;
 }
 
 .item_quantity {
