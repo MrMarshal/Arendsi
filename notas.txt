@@ -1,0 +1,14 @@
+
+Boutique
+El boton "cancelar" del resumen de la cueta en la boutique no sirve
+checar por que el resumen de la orden los items se recorren a la izquierda
+
+
+Admin
+Al momento de agregar un producto no actualiza al momento, bueno minimo a mi 
+filtrado de archivos al momento de seleccionar un archivo en la creaciond e un producto
+eliminar producto de admin no sirve
+Cuando editas un producto y luego le picas "agregar producto" se vuelve a abrir el producto que estabas agregando
+Precios negativos
+A veces al registrar un productro esta no guarda bien y se rompe el producto
+Al mometno de registrar productos poner campose obligatorios para evitar confusiones

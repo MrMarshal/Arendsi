@@ -101,11 +101,13 @@
                     </div>
                 </div>
             </fieldset>
-
-            <div class="item_viewed_title_container">
-                <h5 class="item_viewed_title">Buscar Producto</h5>
-            </div>
-
+        </div>
+    </div>
+    <div class="row h-100 justify-content-center">
+    <div class="item_viewed_title_container" style="display: flex; justify-content: center;">
+        <h5 class="item_viewed_title">Buscar Producto</h5>
+    </div>
+        <div class="col-5 container blue-box" id="qr_reader_result">
             <div class="row">
                 <div class="col-6">
                     Codigo QR
@@ -674,6 +676,7 @@ body {
     background-color: #4f7f94;
     padding: 5px;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     border-radius: 5px;
 }

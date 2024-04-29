@@ -62,21 +62,11 @@
             </div>
 
             <div class="categories_selector_bar">
-                <div class="categories_selector_inner_container">
-                    <a data-filter="all" href="#category1">Todo</a>
-                    <a data-filter=".category-a" href="#category1">Categoría 1</a>
-                    <a data-filter=".category-b" href="#category2">Categoría 2</a>
-                    <a data-filter=".category-c" href="#category3">Categoría 3</a>
+                <div class="categories_selector_inner_container" id="categories_container">
                 </div>
             </div>
-            <div class="container category-product" id="categories_container">
-                <div class="article_card">
-                    <img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560924153/alcatel-smartphones-einsteiger-mittelklasse-neu-3m.jpg"
-                        alt="article-cover" class="article_image">
-                    <div class="text-content">
-                        <p class="title">$60 <br> Capuchino Cream</p>
-                    </div>
-                </div>
+            <div class="container category-product" id="products_container">
+                
 
             </div>
         </div>
@@ -142,12 +132,14 @@ api_post("tables/GetAllTables").then(res => {
     $("#tables_select").html(tables_s);
 });
 
-api_post("products/GetBestsellers").then(res => {
+api_post("products/GetBestsellers", {
+    section: 1
+}).then(res => {
     let prods = "";
     res.forEach(p => {
-        prods += `<div class="owl-item">
-                        <div class="item_viewed_item discount d-flex flex-column align-items-center justify-content-center text-center">
-                            
+        prods += `<div class="owl-item" onclick="addProduct(${p.id})">
+                        <div
+                            class="item_viewed_item discount d-flex flex-column align-items-center justify-content-center text-center">
                             <div class="product-card">
                                 <img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560924153/alcatel-smartphones-einsteiger-mittelklasse-neu-3m.jpg" alt="Producto">
                                 <div class="product-info">
@@ -177,7 +169,64 @@ api_post("products/GetBestsellers").then(res => {
             }
         });
     }
-})
+});
+
+
+
+function getCategories() {
+    api_post("categories/GetAllCategories", {
+        section: 1
+    }).then(res => {
+        console.log("Categories");
+        console.log(res);
+        categories = res;
+        let cats = `<a data-filter="all">Todo</a>`;
+        categories.forEach(cat => {
+            cats += `<a data-filter=".category-${cat.id}">${cat.name}</a>`;
+        });
+        $("#categories_container").html(cats);
+        var containerEl = document.querySelector('#products_container');
+        var mixer = mixitup(containerEl);
+    });
+}
+api_post("products/GetActiveProducts", {
+    section: 1
+}).then(res => {
+    getCategories();
+    products = res;
+    let prods = "";
+    res.forEach(p => {
+        prods += `<div class="mix category-${p.category.id} product-card" onclick="addProduct(${p.id})">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/Cappuccino_PeB.jpg" alt="Producto">
+                    <div class="product-info">
+                        <h3>${p.name}</h3>
+                        <p>$${p.price}</p>
+                    </div>
+                </div>`;
+    });
+
+    $("#products_container").html(prods);
+});
+
+
+function addProduct(id) {
+    console.log(products)
+    let product = products.find(x => x.id == id);
+    console.log(product);
+    if (!orders[current_order]) orders[current_order] = [];
+    let index = orders[current_order].findIndex(x => x.product_id == id);
+    if (index != -1) {
+        orders[current_order][index].quantity++;
+    } else {
+        orders[current_order].push({
+            product_id: id,
+            quantity: 1,
+            product
+        });
+    }
+    printCurrentOrder();
+}
+
 
 function showTable(id) {
 
@@ -386,6 +435,7 @@ body {
     background-color: #4f7f94;
     padding: 5px;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     border-radius: 5px;
 }
