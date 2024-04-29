@@ -8,6 +8,7 @@ class Admin
 	const TABLE_IMAGES = "images";
 	const TABLE_CATEGORIES = "categories";
 	const TABLE_SUBCATEGORIES = "subcategories";
+	const TABLE_INVOICES = "invoices";
 
 	const TABLE_CAT_LOCATIONS = "cat_locations";
 
