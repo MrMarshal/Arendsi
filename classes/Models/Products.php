@@ -47,7 +47,13 @@
 
         function GetBestsellers($data) {
             $user = ["branch_id" => 1];
-            return $this->GetList(self::TABLE_PRODUCTS,"branch_id = ".$user['branch_id']." AND section_id = ".$data->get('section'));
+            $prods = $this->GetList(self::TABLE_PRODUCTS,"branch_id = ".$user['branch_id']." AND section_id = ".$data->get('section'));
+            $res = [];
+            foreach($prods as $prod) {
+                $prod['image'] = $this->GetByCondition(self::TABLE_IMAGES,"product_id = ".$prod['id']);
+                $res[] = $prod;
+            }
+            return $res;
         }
 
         function GetProductByCode($data) {
@@ -64,7 +70,13 @@
             if ($data->get('price')!=""){
                 $f .= " AND price = ".$data->get('price');
             }
-            return $this->GetList(self::TABLE_PRODUCTS,$f);
+            $prods = $this->GetList(self::TABLE_PRODUCTS,$f);
+            $res = [];
+            foreach($prods as $prod) {
+                $prod['image'] = $this->GetByCondition(self::TABLE_IMAGES,"product_id = ".$prod['id']);
+                $res[] = $prod;
+            }
+            return $res;
         }
     }
 

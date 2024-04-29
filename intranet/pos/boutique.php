@@ -48,11 +48,7 @@
                 <div class="categories_selector_inner_container" id="categories_container">
                 </div>
             </div>
-            <div class="container category-product" id="products_container">
-
-            </div>
-
-
+            <div class="container category-product" id="products_container"></div>
 
             <div class="item_viewed_title_container">
                 <h4 class="item_viewed_title">Sugerencias</h4>
@@ -68,16 +64,25 @@
             <fieldset>
                 <div class="container blue-box">
                     <div class="row">
-                        <div class="col-7" style="font-size: 15px;">
-                            <!--# cuenta-->
+                        <div class="col-3">
+                            <a id="btn_order_1" onclick="setCurrentOrder(1);" style="font-size: 12px;"
+                                class="btn btn-outline-info btn-order-select">Cuenta 1</a>
+                            <span id="order_notification_1" class="order-notification d-none"></span>
                         </div>
-                        <div class="col-5" style="font-size: 15px; text-align: right;">Total</div>
-
-                        <div class="col-7">
-                            <!--<select id="tables_select" class="form-select"></select>-->
+                        <div class="col-3">
+                            <a id="btn_order_2" onclick="setCurrentOrder(2);" style="font-size: 12px;"
+                                class="btn btn-outline-info btn-order-select">Cuenta 2</a>
+                            <span id="order_notification_2" class="order-notification d-none"></span>
                         </div>
-                        <div class="col-5 " style="font-size: 20px; text-align: right;">
-                            $<span id="order_total"></span>
+                        <div class="col-3">
+                            <a id="btn_order_0" onclick="setCurrentOrder(0);" style="font-size: 12px;"
+                                class="btn btn-outline-info btn-order-select">Nueva Cuenta</a>
+                            <span id="order_notification_0" class="order-notification d-none"></span>
+                        </div>
+                        <div class="col-3" style="font-size: 20px; text-align: right;">
+                            Total
+                            <br>
+                            $<span id="order_total">00.00</span>
                         </div>
                         <div class="row" style="margin-top: 5px; border-bottom: 1px solid white;">
                             <div class="col-2" style="font-size: 12px;">Uds.</div>
@@ -96,58 +101,53 @@
                     </div>
                 </div>
             </fieldset>
-        </div>
-    </div>
-    <div class="row h-100 justify-content-center">
-        <div class="item_viewed_title_container">
-            <h5 class="item_viewed_title">Buscar Producto</h5>
-        </div>
-        <div class="col-5 container blue-box" id="qr_reader_result">
+
+            <div class="item_viewed_title_container">
+                <h5 class="item_viewed_title">Buscar Producto</h5>
+            </div>
+
             <div class="row">
-                <div class="col-5">
+                <div class="col-6">
                     Codigo QR
                     <div style="width:175px;height: 150px;overflow: hidden;margin-top:10px">
                         <video id="qr-scanner"></video>
                     </div>
                 </div>
-                <div class="col-7">
+                <div class="col-6">
                     <label for="descripcion">Descripción:</label>
-                    <input class="form-control" type="text" id="search_description" name="descripcion" placeholder="Describe el producto">
+                    <input class="form-control" type="text" id="search_description" name="descripcion"
+                        placeholder="Describe el producto">
                     <label for="precio">Precio:</label>
-                    <input class="form-control" type="number" id="search_price" name="precio" placeholder="Busca por su precio">
+                    <input class="form-control" type="number" id="search_price" name="precio"
+                        placeholder="Busca por su precio">
                     <a class="btn action_btn btn-primary w-100 mt-4" onclick="searchProducts();">Buscar</a>
                 </div>
             </div>
 
         </div>
-        <!--<div class="col-5 container blue-box">
-            Resultado de búqueda
-            <div class="scanner"></div>
-        </div>-->
-
-
-        <div class="modal fade" id="searchResultModal" aria-labelledby="searchResultModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="searchResultModalLabel">Resultados de búsqueda</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body" style="height: 400px;overflow: scroll;">
-                        <div class="container" id="container_search_results">
-
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- aqui acaba el modal -->
-
     </div>
 </div>
+
+<div class="modal fade" id="searchResultModal" aria-labelledby="searchResultModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchResultModalLabel">Resultados de búsqueda</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="height: 400px;overflow: scroll;">
+                <div class="container" id="container_search_results">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <style>
 /* Styles para el modal */
 #container_search_results {
@@ -247,16 +247,18 @@
 <script>
 function searchProducts() {
     api_post("products/SearchProducts", {
-        section:2,
+        section: 2,
         description: $("#search_description").val(),
         price: $("#search_price").val()
     }).then(res => {
+        $("#search_description").val("");
+        $("#search_price").val("");
         console.log(res);
         let prods = "";
         res.forEach(pro => {
             prods += `<div class="row item_search_result">
                     <div class="col-3 item_image_result">
-                        <img src="https://www.nbcstore.com/cdn/shop/products/51dg2z5ri8l._sl1000__2_1.jpg?v=1682618044" alt="Producto">
+                        <img src="<?php echo __ROOT__; ?>/assets/data/products/${pro.image.url}" alt="Producto">
                     </div>
                     <div class="col-6 item_description_result">
                         <h6 class="item_viewed_title">${pro.name}</h6>
@@ -273,7 +275,7 @@ function searchProducts() {
     })
 }
 
-function closeSearchModal(){
+function closeSearchModal() {
     $("#searchResultModal").modal("hide");
 }
 </script>
@@ -285,6 +287,27 @@ let current_order = 0;
 let products = [];
 let categories = [];
 
+function getOrders() {
+    api_post("invoices/GetActiveOrders", {
+
+    }).then(res => {
+        res.forEach(order => {
+            let o = JSON.parse(order.items);
+            o.forEach(_o => {
+                _o.product = products.find(x => x.id == _o.product_id);
+            });
+            orders[order.order_id] = o;
+            $("#order_notification_" + order.order_id).removeClass("d-none");
+        });
+    })
+}
+
+function setCurrentOrder(o) {
+    current_order = o;
+    $(".btn-order-select").removeClass("btn-info");
+    $("#btn_order_" + o).addClass("btn-info");
+    printCurrentOrder();
+}
 
 api_post("tables/GetAllTables").then(res => {
     tables = res;
@@ -318,12 +341,13 @@ function getCategories() {
 api_post("products/GetActiveProducts", {
     section: 2
 }).then(res => {
-    getCategories();
     products = res;
+    getCategories();
+    getOrders();
     let prods = "";
     res.forEach(p => {
         prods += `<div class="mix category-${p.category.id} product-card" onclick="addProduct(${p.id})">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/Cappuccino_PeB.jpg" alt="Producto">
+                    <img src="<?php echo __ROOT__; ?>/assets/data/products/${p.image.url}" alt="Producto">
                     <div class="product-info">
                         <h3>${p.name}</h3>
                         <p>$${p.price}</p>
@@ -339,11 +363,12 @@ api_post("products/GetBestsellers", {
 }).then(res => {
     let prods = "";
     res.forEach(p => {
+        console.log(p);
         prods += `<div class="owl-item" onclick="addProduct(${p.id})">
                         <div
                             class="item_viewed_item discount d-flex flex-column align-items-center justify-content-center text-center">
                             <div class="product-card">
-                                <img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560924153/alcatel-smartphones-einsteiger-mittelklasse-neu-3m.jpg" alt="Producto">
+                                <img src="<?php echo __ROOT__; ?>/assets/data/products/${p.image.url}" alt="Producto">
                                 <div class="product-info">
                                     <h3>${p.name}</h3>
                                     <p>$${p.price}</p>
@@ -394,22 +419,27 @@ function addProduct(id) {
 function printCurrentOrder() {
     let ords = "";
     let total = 0;
-    orders[current_order].forEach((o, index) => {
-        ords += `<div class="container mx-0 px-0" id="order_item_${index}">
-                    <div class="row order_item">
-                        <div id="order_item_quantity_${index}" class="col-1 item_quantity">${o.quantity}</div>
-                        <div class="col-3 px-0 ml-4">
-                            <button type="button" onclick="increaseQuantity(${index})" class="btn btn-sm btn-success text-center" style="margin-left:2px;"><i class="fa fa-plus"></i></button>
-                            <button type="button" onclick="decreaseQuantity(${index})" class="btn btn-sm btn-primary text-center" style="margin-left:5px;"><i class="fa fa-minus"></i></button>
-                        </div>
-                        <div class="col-6 item_name px-0">${o.product.name} <br> $${o.product.price}</div>
-                        <div class="col-1">
-                            <button type="button" onclick="deleteOrder(${index})" class="btn btn-sm btn-danger text-center"><i class="fa fa-trash"></i></button>
-                        </div>
-                    </div>
-                </div>`;
-        total += Number(o.product.price) * Number(o.quantity);
-    });
+    if (!orders[current_order] || orders[current_order].length == 0) {
+        ords = "Sin productos agregados";
+    } else {
+        
+        orders[current_order].forEach((o, index) => {
+            ords += `<div class="container mx-0 px-0" id="order_item_${index}">
+            <div class="row order_item">
+            <div id="order_item_quantity_${index}" class="col-1 item_quantity">${o.quantity}</div>
+            <div class="col-3 px-0 ml-4">
+            <button type="button" onclick="increaseQuantity(${index})" class="btn btn-sm btn-success text-center" style="margin-left:2px;"><i class="fa fa-plus"></i></button>
+            <button type="button" onclick="decreaseQuantity(${index})" class="btn btn-sm btn-primary text-center" style="margin-left:5px;"><i class="fa fa-minus"></i></button>
+            </div>
+            <div class="col-6 item_name px-0">${o.product.name} <br> $${o.product.price}</div>
+            <div class="col-1">
+            <button type="button" onclick="deleteOrder(${index})" class="btn btn-sm btn-danger text-center"><i class="fa fa-trash"></i></button>
+            </div>
+            </div>
+            </div>`;
+            total += Number(o.product.price) * Number(o.quantity);
+        });
+    }
 
     $("#order_total").html(total);
 
@@ -799,13 +829,24 @@ body {
     line-height: 1.2;
 }
 
-.form-control{
-    color:rgba(0, 0, 0) !important;
+.form-control {
+    color: rgba(0, 0, 0) !important;
 }
 </style>
 
 <style>
 #qr-scanner {
     transform: scale(3) translateX(-10%) !important;
+}
+</style>
+
+<style>
+.order-notification {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: #64972c;
+    border-radius: 50%;
+    transform: translateX(55px) translateY(-55px);
 }
 </style>
