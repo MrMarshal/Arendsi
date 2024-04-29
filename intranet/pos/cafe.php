@@ -440,8 +440,14 @@ body {
     border-radius: 5px;
 }
 
-.categories_selector_inner_container a {
+.categories_selector_inner_container li a {
     padding: 5px;
+    border-left: 1px solid #ccc;
+    
+}
+
+.categories_selector_inner_container li:last-child {
+    border-right: 1px solid #ccc;
 }
 
 .categories_selector_inner_container a:hover {
