@@ -120,7 +120,7 @@ api_post("tables/GetAllTables").then(res => {
     res.forEach(t => {
         tables_s += `<option value="${t.id}">${t.name}</option>`;
         $("#tables_" + t.location_id).append(`
-                <a onclick="showTable(${t.id})" class="btn table_available">${t.name}</a>
+                <a onclick="selectTable(${t.id})" class="btn table_available">${t.name}</a>
             `);
     });
     $("#tables_select").html(tables_s);
@@ -286,6 +286,14 @@ function deleteOrder(index) {
 }
 
 function showTable(id) {
+    console.log('Table ID:', id);
+}
+function selectTable(id){
+    current_table = id;
+    current_table = id;
+    printCurrentOrder();
+    document.getElementById('tables_select').value = id;
+    document.getElementById('tables_select').dispatchEvent(new Event('change'));
 
 }
 
