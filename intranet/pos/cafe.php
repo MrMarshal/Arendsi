@@ -62,8 +62,8 @@
             </div>
 
             <div class="categories_selector_bar">
-                <div class="categories_selector_inner_container" id="categories_container">
-                </div>
+                <ul class="nav nav-pills categories_selector_inner_container" id="categories_container">
+                </ul>
             </div>
             <div class="container category-product" id="products_container">
                 
@@ -80,8 +80,8 @@
                         <div class="col-7">
                             <select id="tables_select" class="form-select"></select>
                         </div>
-                        <div class="col-5 " style="font-size: 20px; text-align: right;"><span
-                                id="order_total">$00.00</span>
+                        <div class="col-5 " style="font-size: 20px; text-align: right;">
+                        $<span id="order_total">00.00</span>
                         </div>
                         <div class="row" style="margin-top: 5px; border-bottom: 1px solid white;">
                             <div class="col-2" style="font-size: 12px;">Uds.</div>
@@ -89,14 +89,7 @@
                             <div class="col-4" style="font-size: 10px;"> Orden #00234</div>
                         </div>
                         <div class="col-12 container" id="order_items_container">
-                            <div class="row order_item">
-                                <div class="col-1 item_quantity">3</div>
-                                <div class="col-8 item_name"> Champurrado de chocolate <br> $50</div>
-                                <div class="col-2">
-                                    <button type="button" class="btn btn-sm btn-primary text-center"><i
-                                            class="fa fa-trash"></i></button>
-                                </div>
-                            </div>
+                            
                         </div>
                         <div class="col-6">
                             <a class="btn action_btn btn-outline-primary w-100 mt-2" onclick="closeOrdes();">Cerrar
@@ -117,6 +110,7 @@
 </div>
 
 <script type="text/javascript">
+let orders = [];
 let tables = [];
 let current_table = 0;
 
@@ -126,7 +120,7 @@ api_post("tables/GetAllTables").then(res => {
     res.forEach(t => {
         tables_s += `<option value="${t.id}">${t.name}</option>`;
         $("#tables_" + t.location_id).append(`
-                <a onclick="showTable(${t.id})" class="btn table_available">${t.name}</a>
+                <a onclick="selectTable(${t.id})" class="btn table_available">${t.name}</a>
             `);
     });
     $("#tables_select").html(tables_s);
@@ -180,9 +174,9 @@ function getCategories() {
         console.log("Categories");
         console.log(res);
         categories = res;
-        let cats = `<a data-filter="all">Todo</a>`;
+        let cats = `<li><a data-filter="all">Todo</a></li>`;
         categories.forEach(cat => {
-            cats += `<a data-filter=".category-${cat.id}">${cat.name}</a>`;
+            cats += `<li><a data-filter=".category-${cat.id}">${cat.name}</a></li>`;
         });
         $("#categories_container").html(cats);
         var containerEl = document.querySelector('#products_container');
@@ -207,18 +201,26 @@ api_post("products/GetActiveProducts", {
 
     $("#products_container").html(prods);
 });
+function handleSelectChange() {
+    current_table = document.getElementById('tables_select').value;
+    printCurrentOrder();
+}
+document.getElementById('tables_select').addEventListener('change', handleSelectChange);
+
 
 
 function addProduct(id) {
     console.log(products)
+    console.log(document.getElementById('tables_select').value)
+    current_table = document.getElementById('tables_select').value; //obtenemos el valor del select
     let product = products.find(x => x.id == id);
     console.log(product);
-    if (!orders[current_order]) orders[current_order] = [];
-    let index = orders[current_order].findIndex(x => x.product_id == id);
+    if (!orders[current_table]) orders[current_table] = [];
+    let index = orders[current_table].findIndex(x => x.product_id == id);
     if (index != -1) {
-        orders[current_order][index].quantity++;
+        orders[current_table][index].quantity++;
     } else {
-        orders[current_order].push({
+        orders[current_table].push({
             product_id: id,
             quantity: 1,
             product
@@ -227,8 +229,71 @@ function addProduct(id) {
     printCurrentOrder();
 }
 
+function printCurrentOrder() {
+    let ords = "";
+    let total = 0;
+    if (!orders[current_table] || orders[current_table].length == 0) {
+        ords = "Sin productos agregados";
+    } else {
+        
+        orders[current_table].forEach((o, index) => {
+            ords += `<div class="container mx-0 px-0" id="order_item_${index}">
+            <div class="row order_item">
+            <div id="order_item_quantity_${index}" class="col-1 item_quantity">${o.quantity}</div>
+            <div class="col-3 px-0 ml-4">
+            <button type="button" onclick="increaseQuantity(${index})" class="btn btn-sm btn-success text-center" style="margin-left:5px;"><i class="fa fa-plus"></i></button>
+            <button type="button" onclick="decreaseQuantity(${index})" class="btn btn-sm btn-primary text-center" style="margin-left:5px;"><i class="fa fa-minus"></i></button>
+            </div>
+            <div class="col-6 item_name px-0">${o.product.name} <br> $${o.product.price}</div>
+            <div class="col-1">
+            <button type="button" onclick="deleteOrder(${index})" class="btn btn-sm btn-danger text-center"><i class="fa fa-trash"></i></button>
+            </div>
+            </div>
+            </div>`;
+            total += Number(o.product.price) * Number(o.quantity);
+        });
+    }
+
+    $("#order_total").html(total);
+
+    $("#order_items_container").html(ords);
+}
+
+function decreaseQuantity(index) {
+    if (orders[current_table][index].quantity == 1) {
+        deleteOrder(index);
+    } else {
+        orders[current_table][index].quantity--;
+        printCurrentOrder();
+    }
+}
+
+function increaseQuantity(index) {
+    console.log("Increasing quantity");
+    orders[current_table][index].quantity++;
+    printCurrentOrder();
+}
+
+function deleteOrder(index) {
+    confirm({
+        title: "Eliminar",
+        text: "¿Seguro que deseas eliminar esta orden?",
+        confirm: res => {
+            orders[current_table].splice(index, 1);
+            printCurrentOrder();
+        }
+    });
+}
 
 function showTable(id) {
+    console.log('Table ID:', id);
+}
+function selectTable(id){
+    current_table = id;
+    current_table = id;
+    printCurrentOrder();
+    document.getElementById('tables_select').value = id;
+    document.getElementById('tables_select').dispatchEvent(new Event('change'));
 
 }
 
@@ -311,6 +376,14 @@ body {
 
 * {
     color: white !important;
+}
+
+.swal2-content * {
+    color: #545454 !important;
+}
+
+.swal2-header * {
+    color: #545454 !important;
 }
 
 .blue-box {
@@ -433,15 +506,21 @@ body {
 
 .categories_selector_inner_container {
     background-color: #4f7f94;
-    padding: 5px;
+    padding: 10px;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     border-radius: 5px;
 }
 
-.categories_selector_inner_container a {
+.categories_selector_inner_container li a {
     padding: 5px;
+    border-left: 1px solid #ccc;
+    
+}
+
+.categories_selector_inner_container li:last-child {
+    border-right: 1px solid #ccc;
 }
 
 .categories_selector_inner_container a:hover {
@@ -450,8 +529,9 @@ body {
 
 }
 
-.categories_selector_inner_container a.active {
+.mixitup-control-active{
     background-color: #386375;
+    border-radius:5px;
     padding: 5px;
 }
 
@@ -518,6 +598,7 @@ body {
     align-items: center;
     padding: 5px;
     margin: 5px;
+    margin-left: 1px;
 }
 
 .item_quantity {

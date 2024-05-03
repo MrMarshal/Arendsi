@@ -44,9 +44,13 @@
     <div class="row h-100 justify-content-center">
 
         <div class="col-8">
-            <div class="categories_selector_bar">
+            <!-- <div class="categories_selector_bar">
                 <div class="categories_selector_inner_container" id="categories_container">
                 </div>
+            </div> -->
+            <div class="categories_selector_bar">
+                <ul class="nav nav-pills categories_selector_inner_container" id="categories_container">
+                </ul>
             </div>
             <div class="container category-product" id="products_container"></div>
 
@@ -331,9 +335,9 @@ function getCategories() {
         console.log("Categories");
         console.log(res);
         categories = res;
-        let cats = `<a data-filter="all">Todo</a>`;
+        let cats = `<li><a data-filter="all">Todo</a></li>`;
         categories.forEach(cat => {
-            cats += `<a data-filter=".category-${cat.id}">${cat.name}</a>`;
+            cats += `<li><a data-filter=".category-${cat.id}">${cat.name}</a></li>`;
         });
         $("#categories_container").html(cats);
         var containerEl = document.querySelector('#products_container');
@@ -431,7 +435,7 @@ function printCurrentOrder() {
             <div class="row order_item">
             <div id="order_item_quantity_${index}" class="col-1 item_quantity">${o.quantity}</div>
             <div class="col-3 px-0 ml-4">
-            <button type="button" onclick="increaseQuantity(${index})" class="btn btn-sm btn-success text-center" style="margin-left:2px;"><i class="fa fa-plus"></i></button>
+            <button type="button" onclick="increaseQuantity(${index})" class="btn btn-sm btn-success text-center" style="margin-left:5px;"><i class="fa fa-plus"></i></button>
             <button type="button" onclick="decreaseQuantity(${index})" class="btn btn-sm btn-primary text-center" style="margin-left:5px;"><i class="fa fa-minus"></i></button>
             </div>
             <div class="col-6 item_name px-0">${o.product.name} <br> $${o.product.price}</div>
@@ -602,6 +606,7 @@ body {
 </style>
 
 <style>
+
 .item_viewed_nav_container {
     position: absolute;
     right: -5px;
@@ -675,15 +680,21 @@ body {
 
 .categories_selector_inner_container {
     background-color: #4f7f94;
-    padding: 5px;
+    padding: 10px;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     border-radius: 5px;
 }
 
-.categories_selector_inner_container a {
+.categories_selector_inner_container li a {
     padding: 5px;
+    border-left: 1px solid #ccc;
+    
+}
+
+.categories_selector_inner_container li:last-child {
+    border-right: 1px solid #ccc;
 }
 
 .categories_selector_inner_container a:hover {
@@ -692,8 +703,9 @@ body {
 
 }
 
-.categories_selector_inner_container a.active {
+.mixitup-control-active{
     background-color: #386375;
+    border-radius:5px;
     padding: 5px;
 }
 
@@ -765,6 +777,7 @@ body {
     align-items: center;
     padding: 5px;
     margin-top: 5px;
+    margin-left: 1px;
 }
 
 .item_quantity {
