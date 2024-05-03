@@ -1,0 +1,9 @@
+Account_status 1:
+Es cada vez que se agrega un producto, incluso si ya estaba en Account_status 2
+
+Account_status 2:
+Es cuando se cierra la cuenta. En este account_status sólo se puede agregar un producto, ya no se debe poder quitar (más que con un código)
+
+Al cerrar la cuenta la cuenta en sí desaparece, porque su status (no el account_status) pasa a ser 2
+
+Si se llega a Cancelar la cuenta, el status pasa a ser 0, en caso de que la cuenta esté abierta (account_status = 1) no pasa nada, pero en caso de ya estar cerrada, requiere un código para la cancelación

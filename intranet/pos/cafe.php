@@ -78,7 +78,7 @@
                         <div class="col-5" style="font-size: 15px; text-align: right;">Total</div>
 
                         <div class="col-7">
-                            <select id="tables_select" class="form-select"></select>
+                            <select id="tables_select" class="form-select" onchange="changeCurrentTable(this)"></select>
                         </div>
                         <div class="col-5 " style="font-size: 20px; text-align: right;">
                         $<span id="order_total">00.00</span>
@@ -116,11 +116,11 @@ let current_table = 0;
 
 api_post("tables/GetAllTables").then(res => {
     tables = res;
-    let tables_s = "";
+    let tables_s = "<option value='0'>Sin mesa asignada</option>";
     res.forEach(t => {
         tables_s += `<option value="${t.id}">${t.name}</option>`;
         $("#tables_" + t.location_id).append(`
-                <a onclick="selectTable(${t.id})" class="btn table_available">${t.name}</a>
+                <a onclick="selectTable(${t.id})" id="table_${t.id}" class="btn table-btn">${t.name}</a>
             `);
     });
     $("#tables_select").html(tables_s);
@@ -165,7 +165,12 @@ api_post("products/GetBestsellers", {
     }
 });
 
-
+function newOrder(){
+    current_table = 0;
+    $("#tables_select").val(0);
+    $(".table-selected").removeClass("table-selected");
+    printCurrentOrder();
+}
 
 function getCategories() {
     api_post("categories/GetAllCategories", {
@@ -201,11 +206,7 @@ api_post("products/GetActiveProducts", {
 
     $("#products_container").html(prods);
 });
-function handleSelectChange() {
-    current_table = document.getElementById('tables_select').value;
-    printCurrentOrder();
-}
-document.getElementById('tables_select').addEventListener('change', handleSelectChange);
+
 
 
 
@@ -226,6 +227,8 @@ function addProduct(id) {
             product
         });
     }
+    let index_table = tables.findIndex(x => x.id == current_table);
+    tables[index_table].account_status = 1;
     printCurrentOrder();
 }
 
@@ -290,16 +293,26 @@ function showTable(id) {
 }
 function selectTable(id){
     current_table = id;
-    current_table = id;
+    $(".table-selected").removeClass("table-selected");
+    $("#table_"+id).addClass("table-selected");
     printCurrentOrder();
-    document.getElementById('tables_select').value = id;
-    document.getElementById('tables_select').dispatchEvent(new Event('change'));
-
+    $("#tables_select").val(id);
 }
 
-function showCurrentOrder() {
-    //order_items_container 
+function changeCurrentTable(element){
+    let id = $(element).val();
+    if (typeof orders[id] == "undefined" || orders[id] == null){
+        orders[id] = orders[current_table];
+        orders[current_table] = null;
+        selectTable(id);
+        printCurrentOrder();
+    }else{
+        $("#tables_select").val(current_table);
+        error("La mesa "+tables.find(x => x.id == id).name+" tiene una orden abierta, ciérrela antes de cambiarla");
+    }
+    
 }
+
 </script>
 
 <!-- Categorizador de productos -->
@@ -339,6 +352,7 @@ $(document).ready(function() {
     overflow: hidden;
     position: relative;
     display: flex;
+    cursor: pointer;
 }
 
 .product-card img {
@@ -415,20 +429,25 @@ body {
 
 }
 
-.table_available {
+.table-btn {
     background-color: transparent;
     border-color: #0dcaf0;
 }
 
-.table_opencheck {
+.table-opencheck {
     background-color: #ff8533;
     border-color: #ff8533;
 }
 
-.table_closedcheck {
+.table-closedcheck {
     background-color: #ff3333;
     border-color: #ff3333;
 }
+
+.table-selected{
+    background-color:#0dcaf0 !important;
+}
+
 </style>
 
 <style>
@@ -516,7 +535,11 @@ body {
 .categories_selector_inner_container li a {
     padding: 5px;
     border-left: 1px solid #ccc;
-    
+}
+
+.categories_selector_inner_container li {
+    margin-top: 12px;
+    cursor: pointer;
 }
 
 .categories_selector_inner_container li:last-child {
