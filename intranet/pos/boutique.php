@@ -101,31 +101,32 @@
                     </div>
                 </div>
             </fieldset>
-        </div>
-    </div>
-    <div class="row h-100 justify-content-center">
-    <div class="item_viewed_title_container" style="display: flex; justify-content: center;">
-        <h5 class="item_viewed_title">Buscar Producto</h5>
-    </div>
-        <div class="col-5 container blue-box" id="qr_reader_result">
-            <div class="row">
-                <div class="col-6">
-                    Codigo QR
-                    <div style="width:175px;height: 150px;overflow: hidden;margin-top:10px">
-                        <video id="qr-scanner"></video>
-                    </div>
+
+            <div class="row justify-content-center">
+                <div class="item_viewed_title_container" style="display: flex; justify-content: center;">
+                    <h5 class="item_viewed_title">Buscar Producto</h5>
                 </div>
-                <div class="col-6">
-                    <label for="descripcion">Descripción:</label>
-                    <input class="form-control" type="text" id="search_description" name="descripcion"
-                        placeholder="Describe el producto">
-                    <label for="precio">Precio:</label>
-                    <input class="form-control" type="number" id="search_price" name="precio"
-                        placeholder="Busca por su precio">
-                    <a class="btn action_btn btn-primary w-100 mt-4" onclick="searchProducts();">Buscar</a>
+                <div class="col-12 container blue-box" id="qr_reader_result">
+                    <div class="row">
+                        <div class="col-6">
+                            Codigo QR
+                            <div style="width:175px;height: 150px;overflow: hidden;margin-top:10px">
+                                <video id="qr-scanner"></video>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <label for="descripcion">Descripción:</label>
+                            <input class="form-control" type="text" id="search_description" name="descripcion"
+                                placeholder="Describe el producto">
+                            <label for="precio">Precio:</label>
+                            <input class="form-control" type="number" id="search_price" name="precio"
+                                placeholder="Busca por su precio">
+                            <a class="btn action_btn btn-primary w-100 mt-4" onclick="searchProducts();">Buscar</a>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-
         </div>
     </div>
 </div>
@@ -424,7 +425,7 @@ function printCurrentOrder() {
     if (!orders[current_order] || orders[current_order].length == 0) {
         ords = "Sin productos agregados";
     } else {
-        
+
         orders[current_order].forEach((o, index) => {
             ords += `<div class="container mx-0 px-0" id="order_item_${index}">
             <div class="row order_item">
@@ -443,7 +444,7 @@ function printCurrentOrder() {
         });
     }
 
-    $("#order_total").html(total);
+    $("#order_total").html(total.toFixed(2));
 
     $("#order_items_container").html(ords);
 }

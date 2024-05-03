@@ -23,6 +23,6 @@
 
 <script type="text/javascript">
     function login() {
-        
+        location.href = "<?php echo __ROOT__; ?>/main"
     }
 </script>
