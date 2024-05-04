@@ -228,8 +228,16 @@ function addProduct(id) {
         });
     }
     let index_table = tables.findIndex(x => x.id == current_table);
-    tables[index_table].account_status = 1;
-    printCurrentOrder();
+
+    if(tables[index_table].account_status == 0){
+        tables[index_table].account_status = 1;
+        document.getElementById('table_'+ current_table).classList.add('table-opencheck');
+        printCurrentOrder();
+    }else{
+        printCurrentOrder();
+    }
+
+
 }
 
 function printCurrentOrder() {
@@ -304,7 +312,10 @@ function changeCurrentTable(element){
     if (typeof orders[id] == "undefined" || orders[id] == null){
         orders[id] = orders[current_table];
         orders[current_table] = null;
+        document.getElementById('table_'+ current_table).classList.remove('table-opencheck');
+        changeCurrentTableAccountStatus(id);
         selectTable(id);
+        document.getElementById('table_'+ current_table).classList.add('table-opencheck');
         printCurrentOrder();
     }else{
         $("#tables_select").val(current_table);
@@ -313,6 +324,12 @@ function changeCurrentTable(element){
     
 }
 
+function changeCurrentTableAccountStatus(newId){ // sirve para cambiar el status de la mesa si es que los clientes se cambian de mesa
+    let index_table = tables.findIndex(x => x.id == current_table);
+    tables[index_table].account_status = 0;
+    index_table = tables.findIndex(x => x.id == newId);
+    tables[index_table].account_status = 1;
+}
 </script>
 
 <!-- Categorizador de productos -->
